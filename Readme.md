@@ -1,7 +1,7 @@
 # Личный проект «Угадай мелодию» [![Build status][travis-image]][travis-url]
 
 * Студент: [Alexey Komarov](https://up.htmlacademy.ru/ecmascript/3/user/178804).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Бородий](https://htmlacademy.ru/profile/id384171).
 
 ---
 
