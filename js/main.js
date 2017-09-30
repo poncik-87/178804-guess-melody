@@ -9,19 +9,15 @@ if (`content` in templateNode) {
     let currentIndex = changePage(mainNode, pageTemplateNodes, FIRST_PAGE_INDEX);
 
     document.addEventListener(`keydown`, (event) => {
-      const keyName = event.key;
-
-      if (keyName === `Alt`) {
+      if (!event.altKey) {
         return;
       }
 
-      if (event.altKey) {
-        if (keyName === `ArrowLeft`) {
-          currentIndex = changePage(mainNode, pageTemplateNodes, currentIndex - 1, currentIndex);
-        }
-        if (keyName === `ArrowRight`) {
-          currentIndex = changePage(mainNode, pageTemplateNodes, currentIndex + 1, currentIndex);
-        }
+      const keyName = event.key;
+      if (keyName === `ArrowLeft`) {
+        currentIndex = changePage(mainNode, pageTemplateNodes, currentIndex - 1, currentIndex);
+      } else if (keyName === `ArrowRight`) {
+        currentIndex = changePage(mainNode, pageTemplateNodes, currentIndex + 1, currentIndex);
       }
     });
   }
@@ -32,10 +28,9 @@ if (`content` in templateNode) {
  *
  * @param {HTMLElement[]} pageList Список страниц
  * @param {number} index Индекс требуемой страницы
- * @param {string} optionClass Дополнительный класс искомой страницы
- * @return {HTMLElement}
+ * @return {HTMLElement} Страница, соответствующая индексу из массива
  */
-function getPage(pageList, index, optionClass) {
+function getPage(pageList, index) {
   const pageOrder = [
     `main--welcome`,
     `main--level`,
@@ -44,9 +39,7 @@ function getPage(pageList, index, optionClass) {
 
   let page;
   if (index >= 0 || index < pageOrder.length) {
-    page = pageList.find((it) =>
-      it.classList.contains(pageOrder[index]) &&
-      (!optionClass || it.classList.contains(optionClass)));
+    page = pageList.find((it) => it.classList.contains(pageOrder[index]));
   }
   return page;
 }
@@ -58,17 +51,19 @@ function getPage(pageList, index, optionClass) {
  * @param {HTMLElement[]} pageTemplateNodes Список шаблонов страниц
  * @param {number} nextIndex Индекс следующей страницы
  * @param {number} currentIndex Индекс текущей страницы
- * @return {number}
+ * @return {number} Индекс новой текущей страницы
  */
 function changePage(mainNode, pageTemplateNodes, nextIndex, currentIndex) {
   const nextPageTemplateNode = getPage(pageTemplateNodes, nextIndex);
-  if (nextPageTemplateNode) {
-    if (mainNode.children.length > 0) {
-      mainNode.removeChild(mainNode.lastChild);
-    }
-    mainNode.appendChild(document.importNode(nextPageTemplateNode, true));
-    return nextIndex;
+
+  if (!nextPageTemplateNode) {
+    return currentIndex;
   }
 
-  return currentIndex;
+  if (mainNode.children.length > 0) {
+    mainNode.removeChild(mainNode.lastChild);
+  }
+  mainNode.appendChild(document.importNode(nextPageTemplateNode, true));
+
+  return nextIndex;
 }
