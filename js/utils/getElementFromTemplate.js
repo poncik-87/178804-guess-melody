@@ -1,5 +1,5 @@
 /**
- * Конвертирует разметку из строки в DOM Document
+ * Конвертирует разметку из строки в DOM элемент
  *
  * @param {string} markupString Разметка в формате строки
  * @return {HTMLElement} DOM элемент

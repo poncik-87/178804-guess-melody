@@ -90,26 +90,6 @@ const markupString =
     </div>
   </section>`;
 
-/**
- * Определяет выбран ли хоть один чекбокс из списка
- *
- * @param {HTMLInputElement[]} checkboxList Список чекбоксов
- * @param {HTMLInputElement} currentCheckbox Текущий чекбокс
- * @return {boolean} Выбран ли хоть один чекбокс
- */
-function isAnswerChosen(checkboxList, currentCheckbox) {
-  let isChosen = false;
-  if (currentCheckbox.checked) {
-    isChosen = true;
-  } else {
-    checkboxList.forEach((checkbox) => {
-      isChosen = isChosen || checkbox.checked;
-    });
-  }
-
-  return isChosen;
-}
-
 const mainLevelGenrePage = getElementFromTemplate(markupString);
 
 const sendAnswerButton = mainLevelGenrePage.querySelector(`.genre-answer-send`);
@@ -122,7 +102,7 @@ sendAnswerButton.addEventListener(`click`, () => {
 const answerCheckboxList = [...mainLevelGenrePage.querySelectorAll(`.genre-answer input[type=checkbox]`)];
 answerCheckboxList.forEach((answerCheckbox) => {
   answerCheckbox.addEventListener(`change`, () => {
-    sendAnswerButton.disabled = !isAnswerChosen(answerCheckboxList, answerCheckbox);
+    sendAnswerButton.disabled = !answerCheckboxList.some(({checked}) => checked);
   });
 });
 

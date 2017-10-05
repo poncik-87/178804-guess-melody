@@ -1,11 +1,11 @@
+const mainNode = document.querySelector(`.app .main`);
+
 /**
  * Отрисовывает DOM элемент на странице
  *
  * @param {HTMLElement} domNode DOM элемент, который необходимо отрисовать на странице
  */
 export default function (domNode) {
-  const mainNode = document.querySelector(`.app .main`);
-
   if (!mainNode) {
     return;
   }
