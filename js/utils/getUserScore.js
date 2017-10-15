@@ -1,4 +1,4 @@
-import {ANSWER} from "../Consts";
+import {Answer} from "../consts";
 
 /**
  * Функция подсчитывает счет игрока
@@ -7,7 +7,7 @@ import {ANSWER} from "../Consts";
  * @param {number} lives Количество оставшихся жизней игрока
  * @return {number} Итоговый счет игрока (-1 в случае преждевременного проигрыша)
  */
-export default function (data, lives) {
+export default function getUserScore(data, lives) {
   if (data.length < 10 || lives <= 0) {
     return -1;
   }
@@ -15,13 +15,13 @@ export default function (data, lives) {
   return data.reduce((acc, it) => {
     let ret = acc;
     switch (it) {
-      case ANSWER.CORRECT:
+      case Answer.CORRECT:
         ret += 1;
         break;
-      case ANSWER.FAST_CORRECT:
+      case Answer.FAST_CORRECT:
         ret += 2;
         break;
-      case ANSWER.INCORRECT:
+      case Answer.INCORRECT:
         ret -= 2;
     }
     return ret;

@@ -1,4 +1,4 @@
-import {GAME_RESULT} from '../Consts';
+import {GameResult} from '../consts';
 
 /**
  * Функция возвращает результат игры в виде текстового сообщения
@@ -10,15 +10,15 @@ import {GAME_RESULT} from '../Consts';
  * @param {Array} otherUsersResults Результаты всех остальных игроков
  * @return {string} Результат игры
  */
-export default function (currentUserResult, otherUsersResults) {
+export default function getGameResultMessage(currentUserResult, otherUsersResults) {
   if (currentUserResult.time <= 0) {
-    return GAME_RESULT.TIME_LOST;
+    return GameResult.TIME_LOST;
   }
   if (currentUserResult.lives === 0) {
-    return GAME_RESULT.LIVES_LOST;
+    return GameResult.LIVES_LOST;
   }
   if (otherUsersResults.length === 0) {
-    return GAME_RESULT.win(1, 1, 0);
+    return GameResult.win(1, 1, 0);
   }
 
   // копирование массива для того, чтобы не менять внешних данных
@@ -32,5 +32,5 @@ export default function (currentUserResult, otherUsersResults) {
   const currentUserRating =
     Math.floor((currentUsersCount - currentUserPlace) * 100 / otherGamersCount);
 
-  return GAME_RESULT.win(currentUserPlace, currentUsersCount, currentUserRating);
+  return GameResult.win(currentUserPlace, currentUsersCount, currentUserRating);
 }

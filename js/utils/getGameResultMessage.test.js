@@ -1,6 +1,6 @@
 import assert from 'assert';
-import getGameResult from './getGameResult';
-import {GAME_RESULT} from '../Consts';
+import getGameResultMessage from './getGameResultMessage';
+import {GameResult} from '../consts';
 
 /**
  * Возвращает результаты игры в виде объекта
@@ -12,18 +12,18 @@ import {GAME_RESULT} from '../Consts';
  */
 const getUserResultObject = (score, lives, time) => ({score, lives, time});
 
-describe(`getGameResult`, () => {
+describe(`getGameResultMessage`, () => {
   let currentUserResult;
 
   describe(`test game lost`, () => {
     it(`should return "time lost" game result`, () => {
       currentUserResult = getUserResultObject(1, 1, 0);
-      assert.equal(GAME_RESULT.TIME_LOST, getGameResult(currentUserResult));
+      assert.equal(GameResult.TIME_LOST, getGameResultMessage(currentUserResult));
     });
 
     it(`should return "lives lost" game result`, () => {
       currentUserResult = getUserResultObject(1, 0, 10);
-      assert.equal(GAME_RESULT.LIVES_LOST, getGameResult(currentUserResult));
+      assert.equal(GameResult.LIVES_LOST, getGameResultMessage(currentUserResult));
     });
   });
 
@@ -33,7 +33,7 @@ describe(`getGameResult`, () => {
     it(`should take first place on empty gamers list`, () => {
       otherUsersResults = [];
       currentUserResult = getUserResultObject(1, 1, 10);
-      assert.equal(GAME_RESULT.win(1, 1, 0), getGameResult(currentUserResult, otherUsersResults));
+      assert.equal(GameResult.win(1, 1, 0), getGameResultMessage(currentUserResult, otherUsersResults));
     });
 
     it(`should take first place`, () => {
@@ -43,7 +43,7 @@ describe(`getGameResult`, () => {
         getUserResultObject(15, 3, 100)
       ];
       currentUserResult = getUserResultObject(20, 1, 10);
-      assert.equal(GAME_RESULT.win(1, 4, 100), getGameResult(currentUserResult, otherUsersResults));
+      assert.equal(GameResult.win(1, 4, 100), getGameResultMessage(currentUserResult, otherUsersResults));
     });
 
     it(`should take last place`, () => {
@@ -53,7 +53,7 @@ describe(`getGameResult`, () => {
         getUserResultObject(15, 3, 100)
       ];
       currentUserResult = getUserResultObject(1, 1, 10);
-      assert.equal(GAME_RESULT.win(4, 4, 0), getGameResult(currentUserResult, otherUsersResults));
+      assert.equal(GameResult.win(4, 4, 0), getGameResultMessage(currentUserResult, otherUsersResults));
     });
 
     it(`should take last place with negative score`, () => {
@@ -63,7 +63,7 @@ describe(`getGameResult`, () => {
         getUserResultObject(15, 3, 100)
       ];
       currentUserResult = getUserResultObject(-1, 1, 10);
-      assert.equal(GAME_RESULT.win(4, 4, 0), getGameResult(currentUserResult, otherUsersResults));
+      assert.equal(GameResult.win(4, 4, 0), getGameResultMessage(currentUserResult, otherUsersResults));
     });
 
     it(`should take 2 place of 3`, () => {
@@ -72,7 +72,7 @@ describe(`getGameResult`, () => {
         getUserResultObject(10, 2, 10)
       ];
       currentUserResult = getUserResultObject(5, 1, 10);
-      assert.equal(GAME_RESULT.win(2, 3, 50), getGameResult(currentUserResult, otherUsersResults));
+      assert.equal(GameResult.win(2, 3, 50), getGameResultMessage(currentUserResult, otherUsersResults));
     });
 
     it(`should take 2 place of 4`, () => {
@@ -82,7 +82,7 @@ describe(`getGameResult`, () => {
         getUserResultObject(10, 2, 10)
       ];
       currentUserResult = getUserResultObject(5, 1, 10);
-      assert.equal(GAME_RESULT.win(2, 4, 66), getGameResult(currentUserResult, otherUsersResults));
+      assert.equal(GameResult.win(2, 4, 66), getGameResultMessage(currentUserResult, otherUsersResults));
     });
 
     it(`should take 3 place of 4`, () => {
@@ -92,7 +92,7 @@ describe(`getGameResult`, () => {
         getUserResultObject(10, 2, 10)
       ];
       currentUserResult = getUserResultObject(5, 1, 10);
-      assert.equal(GAME_RESULT.win(3, 4, 33), getGameResult(currentUserResult, otherUsersResults));
+      assert.equal(GameResult.win(3, 4, 33), getGameResultMessage(currentUserResult, otherUsersResults));
     });
   });
 });
