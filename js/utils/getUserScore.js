@@ -5,25 +5,31 @@ import {Answer} from "../consts";
  *
  * @param {Array<string>} data Данные ответов игрока
  * @param {number} lives Количество оставшихся жизней игрока
- * @return {number} Итоговый счет игрока (-1 в случае преждевременного проигрыша)
+ *
+ * @return {Object} Итоговый счет игрока в виде объекта с итоговым счетом и счетом быстрых ответов
  */
 export default function getUserScore(data, lives) {
   if (data.length < 10 || lives <= 0) {
-    return -1;
+    return null;
   }
 
+  const initScore = {
+    totalScore: 0,
+    fastAnswersScore: 0
+  };
+
   return data.reduce((acc, it) => {
-    let ret = acc;
     switch (it) {
       case Answer.CORRECT:
-        ret += 1;
+        acc.totalScore = acc.totalScore + 1;
         break;
       case Answer.FAST_CORRECT:
-        ret += 2;
+        acc.totalScore = acc.totalScore + 2;
+        acc.fastAnswersScore = acc.fastAnswersScore + 2;
         break;
       case Answer.INCORRECT:
-        ret -= 2;
+        acc.totalScore = acc.totalScore - 2;
     }
-    return ret;
-  }, 0);
+    return acc;
+  }, initScore);
 }
