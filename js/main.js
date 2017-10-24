@@ -1,4 +1,4 @@
-import welcomePage from './pages/welcomePage';
+import welcomePage from './templates/welcomePage';
 import renderPage from './utils/renderPage';
 
-renderPage(welcomePage);
+renderPage(welcomePage());
