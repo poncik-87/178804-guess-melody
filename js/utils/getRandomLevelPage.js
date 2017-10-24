@@ -1,5 +1,5 @@
-import mainLevelArtistPage from '../templates/mainLevelArtistPage';
-import mainLevelGenrePage from '../templates/mainLevelGenrePage';
+import mainLevelArtistPage from '../components/mainLevelArtist/mainLevelArtistPage';
+import mainLevelGenrePage from '../components/mainLevelGenre/mainLevelGenrePage';
 import getArtistQuestion from './getArtistQuestion';
 import getGenreQuestion from './getGenreQuestion';
 import getRandomListElement from './getRandomListElement';

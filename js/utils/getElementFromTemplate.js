@@ -4,7 +4,7 @@
  * @param {string} template Разметка в формате строки
  * @return {HTMLElement} DOM элемент
  */
-export default function (template) {
+export default function getElementFromTemplate(template) {
   const tmpNode = document.createElement(`div`);
   tmpNode.innerHTML = template;
   return tmpNode.firstChild;
