@@ -9,14 +9,9 @@ export default class AudioControlController {
    */
   constructor(src) {
     this._view = new AudioControlView(src);
-  }
 
-  /**
-   * Функция возвращает элемент компонента
-   *
-   * @return {HTMLElement} Dom элемент, который создает вью
-   */
-  get element() {
-    return this._view.element;
+    this.renderAudioControlView = () => {
+      return this._view.element;
+    };
   }
 }

@@ -5,14 +5,15 @@ import ResultWinView from './ResultWinView';
 /**
  * Функция возвращает страницу выигрышного результата
  *
+ * @param {GameState} gameState Состояние игры
  * @param {Object} userScore Счет игрока
  * @param {string} resultMessage Сообщение с результатом
- * @param {Object} gameState Состояние игры
+ *
  *
  * @return {HTMLElement} Страница результата
  */
-const resultWinPage = (userScore, resultMessage, gameState) => {
-  const view = new ResultWinView(userScore, resultMessage, gameState);
+const resultWinPage = (gameState, userScore, resultMessage) => {
+  const view = new ResultWinView(gameState, userScore, resultMessage);
   view.onRestartClick = () => {
     renderPage(welcomePage());
   };

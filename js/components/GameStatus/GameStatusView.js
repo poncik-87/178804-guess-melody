@@ -1,6 +1,15 @@
 import AbstractView from '../../AbstractView';
+import timeConverter from '../../utils/timeConverter';
 
-const timerTemplate =
+/**
+ * Функция возвращает шаблон блока времени игры
+ *
+ * @param {number} minutes Минуты
+ * @param {number} seconds Секунды
+ *
+ * @return {string} Шаблон блока времени игры
+ */
+const timerTemplate = ({minutes, seconds}) =>
   `<svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
      <circle
        cx="390" cy="390" r="370"
@@ -9,9 +18,9 @@ const timerTemplate =
      </circle>
 
      <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
-       <span class="timer-value-mins">05</span>
+       <span class="timer-value-mins">${minutes}</span>
        <span class="timer-value-dots">:</span>
-       <span class="timer-value-secs">00</span>
+       <span class="timer-value-secs">${seconds}</span>
      </div>
    </svg>`;
 
@@ -36,6 +45,7 @@ export default class GameStatusView extends AbstractView {
   /**
    * @param {Object} gameState Состояние игры
    * @param {number} gameState.lives Количество жизней игрока
+   * @param {number} gameState.time Время игры
    */
   constructor(gameState) {
     super();
@@ -44,12 +54,22 @@ export default class GameStatusView extends AbstractView {
   }
 
   /**
+   * Функция обновляет отображение вью
+   *
+   * @param {Object} gameState Состояние игры
+   */
+  update(gameState) {
+    this._gameState = gameState;
+    super.update();
+  }
+
+  /**
    * @inheritdoc
    */
   get template() {
     return (
       `<div>
-         ${timerTemplate}
+         ${timerTemplate(timeConverter.numberToTime(this._gameState.time))}
          ${livesTemplate(this._gameState.lives)}
        </div>`
     );

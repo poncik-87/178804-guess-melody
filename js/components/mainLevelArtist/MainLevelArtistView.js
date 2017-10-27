@@ -55,19 +55,16 @@ const contentTemplate = (questionData) =>
  */
 export default class MainLevelArtistView extends AbstractView {
   /**
-   *
-   * @param {Object} gameState Состояние игры
    * @param {Object} questionData Объект данных вопроса
-   * @param {HTMLElement} gameStatusComponent Компонент статуса игры
-   * @param {HTMLElement} audioControlComponent Компонент контрола аудио
+   * @param {Object} childViews Дочерние отображения
+   * @param {Function} childViews.renderGameStatusView Функция отрисовки статуса игры
+   * @param {Function} childViews.renderAudioControlView Функция отрисовки контрола аудио
    */
-  constructor(gameState, questionData, gameStatusComponent, audioControlComponent) {
+  constructor(questionData, childViews) {
     super();
 
-    this._gameState = gameState;
     this._questionData = questionData;
-    this._gameStatusComponent = gameStatusComponent;
-    this._audioControlComponent = audioControlComponent;
+    this._childViews = childViews;
   }
 
   /**
@@ -87,8 +84,8 @@ export default class MainLevelArtistView extends AbstractView {
   insertChildren() {
     const mainWrapNode = this.element.querySelector(`.main-wrap`);
     const answersNode = this.element.querySelector(`.main-list`);
-    this.element.insertBefore(this._gameStatusComponent, mainWrapNode);
-    mainWrapNode.insertBefore(this._audioControlComponent, answersNode);
+    this.element.insertBefore(this._childViews.renderGameStatusView(), mainWrapNode);
+    mainWrapNode.insertBefore(this._childViews.renderAudioControlView(), answersNode);
   }
 
   /**

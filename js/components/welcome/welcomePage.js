@@ -1,6 +1,7 @@
-import renderPage from '../../utils/renderPage';
-import getRandomLevelPage from '../../utils/getRandomLevelPage';
+import GameState from '../../data/GameState';
+import GameData from '../../data/GameData';
 import WelcomeView from './WelcomeView';
+import routeToNextPage from "../../utils/routeToNextPage";
 
 /**
  * Функция возвращает экран приветствия
@@ -9,14 +10,8 @@ import WelcomeView from './WelcomeView';
  */
 const welcomePage = () => {
   const view = new WelcomeView();
-  let gamerAnswers = [];
   view.onStartClick = () => {
-    const initialGameState = {
-      time: 10,
-      lives: 3
-    };
-
-    renderPage(getRandomLevelPage(gamerAnswers, initialGameState));
+    routeToNextPage(new GameState(), GameData.generate());
   };
 
   return view.element;

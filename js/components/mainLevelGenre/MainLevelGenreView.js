@@ -59,19 +59,16 @@ const contentTemplate = (questionData) =>
  */
 export default class MainLevelGenreView extends AbstractView {
   /**
-   *
-   * @param {Object} gameState Состояние игры
    * @param {Object} questionData Объект данных вопроса
-   * @param {HTMLElement} gameStatusComponent Компонент статуса игры
-   * @param {HTMLElement[]} audioControlComponentsList Список компонент контрола аудио
+   * @param {Object} childViews Дочерние отображения
+   * @param {Function} childViews.renderGameStatusView Функция отрисовки статуса игры
+   * @param {Function[]} childViews.renderAudioControlViewList Массив функций отрисовки контрола аудио
    */
-  constructor(gameState, questionData, gameStatusComponent, audioControlComponentsList) {
+  constructor(questionData, childViews) {
     super();
 
-    this._gameState = gameState;
     this._questionData = questionData;
-    this._gameStatusComponent = gameStatusComponent;
-    this._audioControlComponentsList = audioControlComponentsList;
+    this._childViews = childViews;
   }
 
   /**
@@ -90,13 +87,13 @@ export default class MainLevelGenreView extends AbstractView {
    */
   insertChildren() {
     const mainWrapNode = this.element.querySelector(`.main-wrap`);
-    this.element.insertBefore(this._gameStatusComponent, mainWrapNode);
+    this.element.insertBefore(this._childViews.renderGameStatusView(), mainWrapNode);
 
     const answersNodeList = [...this.element.querySelectorAll(`.genre-answer`)];
     for (let i = 0, length = answersNodeList.length; i < length; i++) {
       const answerNode = answersNodeList[i];
       const answerInputNode = answerNode.querySelector(`input`);
-      answerNode.insertBefore(this._audioControlComponentsList[i], answerInputNode);
+      answerNode.insertBefore(this._childViews.renderAudioControlViewList[i](), answerInputNode);
     }
   }
 

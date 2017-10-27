@@ -5,18 +5,17 @@ import GameStatusView from './GameStatusView';
  */
 export default class GameStatusController {
   /**
-   * @param {Object} gameState Состояние игры
+   * @param {GameState} gameState Состояние игры
    */
   constructor(gameState) {
     this._view = new GameStatusView(gameState);
+
+    this.renderGameStatusView = () => {
+      return this._view.element;
+    };
   }
 
-  /**
-   * Функция возвращает элемент компонента
-   *
-   * @return {HTMLElement} Dom элемент, который создает вью
-   */
-  get element() {
-    return this._view.element;
+  update(gameState) {
+    this._view.update(gameState);
   }
 }

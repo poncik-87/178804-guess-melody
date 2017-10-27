@@ -19,6 +19,16 @@ export default class AbstractView {
   }
 
   /**
+   * Функция обновляет отображение вью
+   */
+  update() {
+    const newElement = this.render();
+    this.element.parentNode.replaceChild(newElement, this.element);
+    this._element = newElement;
+    this.bind();
+  }
+
+  /**
    * Функция вставляет в dom элемента дочерние элементы
    * (может быть переопределена в наследниках, опционально)
    */
