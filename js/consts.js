@@ -1,9 +1,15 @@
+/**
+ * Типы ответов на вопрос
+ */
 const Answer = {
   CORRECT: `CORRECT`,
   FAST_CORRECT: `FAST_CORRECT`,
   INCORRECT: `INCORRECT`,
 };
 
+/**
+ * Шаблоны текста ответа
+ */
 const GameResult = {
   TIME_LOST: `Время вышло!
   Вы не успели отгадать все мелодии`,
@@ -13,4 +19,12 @@ const GameResult = {
     `Вы заняли ${place}-ое место из ${gamersCount} игроков. Это лучше чем у ${rating}% игроков`
 };
 
-export {Answer, GameResult};
+/**
+ * Тип игрового вопроса
+ */
+const QuestionType = {
+  ARTIST: `ARTIST`,
+  GENRE: `GENRE`
+};
+
+export {Answer, GameResult, QuestionType};
