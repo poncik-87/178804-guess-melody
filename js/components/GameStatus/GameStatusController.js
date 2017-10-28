@@ -5,17 +5,20 @@ import GameStatusView from './GameStatusView';
  */
 export default class GameStatusController {
   /**
-   * @param {GameState} gameState Состояние игры
+   * @param {number} lives Количество жизней игрока
+   * @param {number} time Оставшееся время игры
    */
-  constructor(gameState) {
-    this._view = new GameStatusView(gameState);
+  constructor({lives, time}) {
+    this._view = new GameStatusView({lives, time});
 
-    this.renderGameStatusView = () => {
-      return this._view.element;
-    };
+    this.renderGameStatusView = this.renderGameStatusView.bind(this);
   }
 
-  update(gameState) {
-    this._view.update(gameState);
+  renderGameStatusView() {
+    return this._view.element;
+  }
+
+  update({lives, time}) {
+    this._view.update({lives, time});
   }
 }

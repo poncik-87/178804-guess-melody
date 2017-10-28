@@ -9,17 +9,22 @@ import MainLevelGenreView from './MainLevelGenreView';
  * Функция возвращает страницу игры с выбором жанра
  *
  * @param {GameState} gameState Состояния игры
- * @param {Object} gameData Данные игры
- * @param {Object} gameData.currentQuestion Текущий вопрос игры
+ * @param {number} gameState.lives Количество жизней игрока
+ * @param {number} gameState.time Оставшееся время игры
+ * @param {Object} gameState.currentQuestion Текущий вопрос игры
+ * @param {Array<Object>} gameState.currentQuestion.answers Ответы на текущий вопрос
  *
  * @return {HTMLElement} Страница игры
  */
-const mainLevelGenrePage = (gameState, gameData) => {
-  const gameStatusController = new GameStatusController(gameState);
-  const renderAudioControlViewList = gameData.currentQuestion.answers.map(({src}) =>
+const mainLevelGenrePage = (gameState) => {
+  const gameStatusController = new GameStatusController({
+    lives: gameState.lives,
+    time: gameState.time
+  });
+  const renderAudioControlViewList = gameState.currentQuestion.answers.map(({src}) =>
     (new AudioControlController(src)).renderAudioControlView);
 
-  const view = new MainLevelGenreView(gameData.currentQuestion, {
+  const view = new MainLevelGenreView(gameState.currentQuestion, {
     renderGameStatusView: gameStatusController.renderGameStatusView,
     renderAudioControlViewList
   });
@@ -29,22 +34,24 @@ const mainLevelGenrePage = (gameState, gameData) => {
 
     if (gameState.time <= 0) {
       clearInterval(timerId);
-      routeToNextPage(gameState, gameData);
+      routeToNextPage(gameState);
     }
 
-    gameStatusController.update(gameState);
+    gameStatusController.update({
+      lives: gameState.lives,
+      time: gameState.time
+    });
   }, 1000);
 
   view.onAnswerClick = (isCorrectAnswer) => {
     if (isCorrectAnswer) {
-      gameData = gameData.setQuestionAnswer(Answer.CORRECT);
+      gameState = gameState.setQuestionAnswer(Answer.CORRECT);
     } else {
-      gameData = gameData.setQuestionAnswer(Answer.INCORRECT);
-      gameState = gameState.dropLive();
+      gameState = gameState.setQuestionAnswer(Answer.INCORRECT).dropLive();
     }
 
     clearInterval(timerId);
-    routeToNextPage(gameState, gameData);
+    routeToNextPage(gameState);
   };
 
   return view.element;

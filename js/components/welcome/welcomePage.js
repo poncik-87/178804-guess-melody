@@ -1,5 +1,4 @@
 import GameState from '../../data/GameState';
-import GameData from '../../data/GameData';
 import WelcomeView from './WelcomeView';
 import routeToNextPage from "../../utils/routeToNextPage";
 
@@ -11,7 +10,7 @@ import routeToNextPage from "../../utils/routeToNextPage";
 const welcomePage = () => {
   const view = new WelcomeView();
   view.onStartClick = () => {
-    routeToNextPage(new GameState(), GameData.generate());
+    routeToNextPage(GameState.generate());
   };
 
   return view.element;

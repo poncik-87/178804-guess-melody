@@ -43,23 +43,26 @@ const livesTemplate = (lives) =>
  */
 export default class GameStatusView extends AbstractView {
   /**
-   * @param {Object} gameState Состояние игры
-   * @param {number} gameState.lives Количество жизней игрока
-   * @param {number} gameState.time Время игры
+   * @param {number} lives Количество жизней игрока
+   * @param {number} time Время игры
    */
-  constructor(gameState) {
+  constructor({lives, time}) {
     super();
 
-    this._gameState = gameState;
+    this._lives = lives;
+    this._time = time;
   }
 
   /**
    * Функция обновляет отображение вью
    *
-   * @param {Object} gameState Состояние игры
+   * @param {number} lives Количество жизней игрока
+   * @param {number} time Время игры
    */
-  update(gameState) {
-    this._gameState = gameState;
+  update({lives, time}) {
+    this._lives = lives;
+    this._time = time;
+
     super.update();
   }
 
@@ -69,8 +72,8 @@ export default class GameStatusView extends AbstractView {
   get template() {
     return (
       `<div>
-         ${timerTemplate(timeConverter.numberToTime(this._gameState.time))}
-         ${livesTemplate(this._gameState.lives)}
+         ${timerTemplate(timeConverter.numberToTime(this._time))}
+         ${livesTemplate(this._lives)}
        </div>`
     );
   }

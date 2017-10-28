@@ -10,8 +10,10 @@ export default class AudioControlController {
   constructor(src) {
     this._view = new AudioControlView(src);
 
-    this.renderAudioControlView = () => {
-      return this._view.element;
-    };
+    this.renderAudioControlView = this.renderAudioControlView.bind(this);
+  }
+
+  renderAudioControlView() {
+    return this._view.element;
   }
 }
