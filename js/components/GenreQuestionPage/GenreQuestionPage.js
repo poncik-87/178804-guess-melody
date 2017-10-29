@@ -1,6 +1,6 @@
 import {Answer} from '../../consts';
 
-import routeToNextPage from '../../utils/routeToNextPage';
+import App from '../../App';
 import GameStatus from '../GameStatus/GameStatus';
 import AudioControl from '../AudioControl/AudioControl';
 import GenreQuestionPageView from './GenreQuestionPageView';
@@ -53,7 +53,7 @@ class GenreQuestionPage {
 
     if (this._gameState.time <= 0) {
       clearInterval(this._timerId);
-      routeToNextPage(this._gameState);
+      App.showNextPage(this._gameState);
     }
 
     this._gameStatus.update({
@@ -76,7 +76,7 @@ class GenreQuestionPage {
     }
 
     clearInterval(this._timerId);
-    routeToNextPage(this._gameState);
+    App.showNextPage(this._gameState);
   }
 }
 

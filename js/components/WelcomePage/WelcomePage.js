@@ -1,7 +1,6 @@
 import WelcomePageView from './WelcomePageView';
 import renderPage from "../../utils/renderPage";
-import routeToNextPage from '../../utils/routeToNextPage';
-import GameState from '../../data/GameState';
+import App from '../../App';
 
 /**
  * Страница приветствия
@@ -18,7 +17,7 @@ class WelcomePage {
     renderPage(this._view.element);
 
     this._view.onStartClick = () => {
-      routeToNextPage(GameState.generate());
+      App.startGame();
     };
   }
 }

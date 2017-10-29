@@ -1,6 +1,6 @@
 import {Answer} from '../../consts';
 
-import routeToNextPage from '../../utils/routeToNextPage';
+import App from '../../App';
 import AudioControl from '../AudioControl/AudioControl';
 import GameStatus from '../GameStatus/GameStatus';
 import ArtistQuestionPageView from './ArtistQuestionPageView';
@@ -55,7 +55,7 @@ class ArtistQuestionPage {
 
     if (this._gameState.time <= 0) {
       clearInterval(this._timerId);
-      routeToNextPage(this._gameState);
+      App.showNextPage(this._gameState);
     }
 
     this._gameStatus.update({
@@ -78,7 +78,7 @@ class ArtistQuestionPage {
     }
 
     clearInterval(this._timerId);
-    routeToNextPage(this._gameState);
+    App.showNextPage(this._gameState);
   }
 }
 
