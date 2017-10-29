@@ -1,9 +1,9 @@
 import AbstractView from '../../AbstractView';
 
 /**
- * Класс вью приветственного экрана
+ * Вью приветственного экрана
  */
-export default class WelcomeView extends AbstractView {
+export default class WelcomePageView extends AbstractView {
   /**
    * @inheritdoc
    */

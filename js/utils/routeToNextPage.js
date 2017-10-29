@@ -1,12 +1,7 @@
 import {QuestionType} from '../consts';
 
-import renderPage from './renderPage';
-import mainLevelArtistPage from '../components/mainLevelArtist/mainLevelArtistPage';
-import mainLevelGenrePage from '../components/mainLevelGenre/mainLevelGenrePage';
 import getGameResultMessage from './getGameResultMessage';
-import resultWinPage from '../components/resultWin/resultWinPage';
-import resultLoosePage from '../components/resultLoose/resultLoosePage';
-import resultTimeoutPage from '../components/resultTimeout/resultTimeoutPage';
+import App from '../App';
 
 /**
  * Функция отрисовывает следующий экран игры
@@ -22,16 +17,16 @@ import resultTimeoutPage from '../components/resultTimeout/resultTimeoutPage';
  */
 export default function routeToNextPage(gameState) {
   if (gameState.time <= 0) {
-    renderPage(resultTimeoutPage(getGameResultMessage({time: gameState.time})));
+    App.showResultTimeoutPage(getGameResultMessage({time: gameState.time}));
   } else if (gameState.lives <= 0) {
-    renderPage(resultLoosePage(getGameResultMessage({lives: gameState.lives})));
+    App.showResultLoosePage(getGameResultMessage({lives: gameState.lives}));
   } else if (gameState.hasNextQuestion) {
     gameState = gameState.iterateQuestion();
 
     if (gameState.currentQuestion.type === QuestionType.ARTIST) {
-      renderPage(mainLevelArtistPage(gameState));
+      App.showArtistQuestionPage(gameState);
     } else if (gameState.currentQuestion.type === QuestionType.GENRE) {
-      renderPage(mainLevelGenrePage(gameState));
+      App.showGenreQuestionPage(gameState);
     }
   } else {
     const userScore = gameState.userScore;
@@ -42,6 +37,11 @@ export default function routeToNextPage(gameState) {
       time: gameState.time
     }, []);
 
-    renderPage(resultWinPage(gameState, userScore, resultMessage));
+    App.showResultWinPage({
+      lives: gameState.lives,
+      time: gameState.time,
+      userScore,
+      resultMessage
+    });
   }
 }

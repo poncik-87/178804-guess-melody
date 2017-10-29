@@ -1,9 +1,9 @@
 import AudioControlView from './AudioControlView';
 
 /**
- * Класс контроллера для контрола аудио
+ * Контрола аудио
  */
-export default class AudioControlController {
+export default class AudioControl {
   /**
    * @param {string} src Url аудиозаписи
    */
@@ -13,6 +13,11 @@ export default class AudioControlController {
     this.renderAudioControlView = this.renderAudioControlView.bind(this);
   }
 
+  /**
+   * Колбэк отрисовки вью в родителе
+   *
+   * @return {HTMLElement} Элемент контрола
+   */
   renderAudioControlView() {
     return this._view.element;
   }

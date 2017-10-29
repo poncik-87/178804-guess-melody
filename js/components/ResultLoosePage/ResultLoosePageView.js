@@ -1,16 +1,18 @@
 import AbstractView from '../../AbstractView';
 
 /**
- * Класс вью для игрового экрана закончившегося времени
+ * Вью страницы проигрыша
  */
-export default class ResultTimeoutView extends AbstractView {
+export default class ResultLoosePageView extends AbstractView {
   /**
+   * Функция инициализации вью
+   *
    * @param {string} resultMessage Сообщение с результатом
    */
-  constructor(resultMessage) {
-    super();
-
+  init(resultMessage) {
     this._resultMessage = resultMessage;
+
+    this.clearElement();
   }
 
   /**
@@ -21,7 +23,7 @@ export default class ResultTimeoutView extends AbstractView {
       `<section class="main main--result">
          <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
 
-         <h2 class="title">Увы и ах!</h2>
+         <h2 class="title">Какая жалость!</h2>
          <div class="main-stat">${this._resultMessage}</div>
          <span role="button" tabindex="0" class="main-replay">Попробовать ещё раз</span>
        </section>`
