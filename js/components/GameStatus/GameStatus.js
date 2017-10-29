@@ -5,13 +5,43 @@ import GameStatusView from './GameStatusView';
  */
 export default class GameStatus {
   /**
-   * @param {number} lives Количество жизней игрока
-   * @param {number} time Оставшееся время игры
+   * @param {GameState} gameState Состояние игры
    */
-  constructor({lives, time}) {
-    this._view = new GameStatusView({lives, time});
+  constructor(gameState) {
+    this._view = new GameStatusView();
+
+    gameState.subscribeOnTimeChanged(this.onTimeChanged.bind(this));
+    gameState.subscribeOnLivesChanged(this.onLivesChanged.bind(this));
 
     this.renderGameStatusView = this.renderGameStatusView.bind(this);
+  }
+
+  /**
+   * Функция инициализации блока статуса игры
+   *
+   * @param {number} lives Количество жизней игрока
+   * @param {number} time Время игры
+   */
+  init({lives, time}) {
+    this._view.init({lives, time});
+  }
+
+  /**
+   * Колбэк обработки изменения оставшегося времени игры
+   *
+   * @param {number} time Оставшееся время игры
+   */
+  onTimeChanged(time) {
+    this._view.updateTime(time);
+  }
+
+  /**
+   * Колбэк обработки изменения количества жизней игрока
+   *
+   * @param {number} lives Количество жизней игрока
+   */
+  onLivesChanged(lives) {
+    this._view.updateLives(lives);
   }
 
   /**
@@ -21,15 +51,5 @@ export default class GameStatus {
    */
   renderGameStatusView() {
     return this._view.element;
-  }
-
-  /**
-   * Функция обновления отображения блока статуса игры
-   *
-   * @param {number} lives Количество жизней игрока
-   * @param {number} time Оставшееся время игры
-   */
-  update({lives, time}) {
-    this._view.update({lives, time});
   }
 }

@@ -10,7 +10,7 @@ import GameState from './data/GameState';
 import getGameResultMessage from './utils/getGameResultMessage';
 
 /**
- * Класс контейнер отрисовки игровых экранов
+ * Контейнер отрисовки игровых экранов
  */
 class App {
   /**

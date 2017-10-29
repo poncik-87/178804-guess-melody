@@ -27,15 +27,16 @@ class ArtistQuestionPage {
   init(gameState) {
     this._gameState = gameState;
 
-    this._gameStatus = new GameStatus({
-      lives: this._gameState.lives,
-      time: this._gameState.time
-    });
+    const gameStatus = new GameStatus(gameState);
     const writeAnswer = gameState.currentQuestion.answers[this._gameState.currentQuestion.writeAnswerId];
     const audioControl = new AudioControl(writeAnswer.src);
 
+    gameStatus.init({
+      lives: this._gameState.lives,
+      time: this._gameState.time
+    });
     this._view.init(this._gameState.currentQuestion, {
-      renderGameStatusView: this._gameStatus.renderGameStatusView,
+      renderGameStatusView: gameStatus.renderGameStatusView,
       renderAudioControlView: audioControl.renderAudioControlView
     });
 
@@ -57,11 +58,6 @@ class ArtistQuestionPage {
       clearInterval(this._timerId);
       App.showNextPage(this._gameState);
     }
-
-    this._gameStatus.update({
-      lives: this._gameState.lives,
-      time: this._gameState.time
-    });
   }
 
   /**

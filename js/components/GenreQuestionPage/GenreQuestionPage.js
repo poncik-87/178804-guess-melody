@@ -26,15 +26,16 @@ class GenreQuestionPage {
   init(gameState) {
     this._gameState = gameState;
 
-    this._gameStatus = new GameStatus({
-      lives: this._gameState.lives,
-      time: this._gameState.time
-    });
+    const gameStatus = new GameStatus(gameState);
     const renderAudioControlViewList = this._gameState.currentQuestion.answers.map(({src}) =>
       (new AudioControl(src)).renderAudioControlView);
 
+    gameStatus.init({
+      lives: this._gameState.lives,
+      time: this._gameState.time
+    });
     this._view.init(this._gameState.currentQuestion, {
-      renderGameStatusView: this._gameStatus.renderGameStatusView,
+      renderGameStatusView: gameStatus.renderGameStatusView,
       renderAudioControlViewList});
 
     renderPage(this._view.element);
@@ -55,11 +56,6 @@ class GenreQuestionPage {
       clearInterval(this._timerId);
       App.showNextPage(this._gameState);
     }
-
-    this._gameStatus.update({
-      lives: this._gameState.lives,
-      time: this._gameState.time
-    });
   }
 
   /**

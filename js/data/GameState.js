@@ -24,6 +24,10 @@ const GENRE_ANSWER_VARIANTS_COUNT = 4;
  * Содержит жизни игрока, время игры, и данные вопросов текущей игры
  */
 export default class GameState {
+  constructor() {
+    this._onTimeChangedCallbackSet = new Set();
+    this._onLivesChangedCallbackSet = new Set();
+  }
   /**
    * Функция генерирует новое игровое состояние
    *
@@ -54,8 +58,10 @@ export default class GameState {
     let newGameState = new GameState();
     newGameState._lives = oldGameState._lives;
     newGameState._time = oldGameState._time;
-    newGameState._questions = oldGameState._questions;
+    newGameState._questions = [...oldGameState._questions];
     newGameState._currentQuestionIdx = oldGameState._currentQuestionIdx;
+    newGameState._onTimeChangedCallbackSet = new Set(oldGameState._onTimeChangedCallbackSet);
+    newGameState._onLivesChangedCallbackSet = new Set(oldGameState._onLivesChangedCallbackSet);
 
     return newGameState;
   }
@@ -156,7 +162,7 @@ export default class GameState {
   /**
    * @return {Array<Object>} Возвращает список вопросов текущей игры
    */
-  get questions() {
+  get ёquestions() {
     return this._questions;
   }
 
@@ -214,6 +220,12 @@ export default class GameState {
   dropLive() {
     let newGameState = GameState._copy(this);
     newGameState._lives = newGameState._lives - 1;
+
+    // оповещение подписчиков об изменении модели
+    for (let callback of this._onLivesChangedCallbackSet) {
+      callback(newGameState._lives);
+    }
+
     return newGameState;
   }
 
@@ -225,6 +237,12 @@ export default class GameState {
   tickTime() {
     let newGameState = GameState._copy(this);
     newGameState._time = newGameState._time - 1;
+
+    // оповещение подписчиков об изменении модели
+    for (let callback of this._onTimeChangedCallbackSet) {
+      callback(newGameState._time);
+    }
+
     return newGameState;
   }
 
@@ -250,5 +268,23 @@ export default class GameState {
     let newGameState = GameState._copy(this);
     newGameState._questions[newGameState._currentQuestionIdx].answer = answer;
     return newGameState;
+  }
+
+  /**
+   * Функция подписки на событие изменения оставшегося времени игры
+   *
+   * @param {Function} callback Колбэк обрабатывающий изменение оставшегося времени игры
+   */
+  subscribeOnTimeChanged(callback) {
+    this._onTimeChangedCallbackSet.add(callback);
+  }
+
+  /**
+   * Функция подписки на событие изменения количества жизней игрока
+   *
+   * @param {Function} callback Колбэк обрабатывающий изменение количества жизней игрока
+   */
+  subscribeOnLivesChanged(callback) {
+    this._onLivesChangedCallbackSet.add(callback);
   }
 }
