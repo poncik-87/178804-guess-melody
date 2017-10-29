@@ -11,13 +11,15 @@ export default class ResultWinPageView extends AbstractView {
    *
    * @param {number} lives Количество жизней игрока
    * @param {number} time Оставшееся время игры
-   * @param {Object} userScore Счет игрока
+   * @param {number} totalScore Общий счет игрока
+   * @param {number} fastAnswersScore Счет быстрых ответов
    * @param {string} resultMessage Сообщение результата игры
    */
-  init({lives, time, userScore, resultMessage}) {
+  init({lives, time, totalScore, fastAnswersScore, resultMessage}) {
     this._lives = lives;
     this._time = time;
-    this._userScore = userScore;
+    this._totalScore = totalScore;
+    this._fastAnswersScore = fastAnswersScore;
     this._resultMessage = resultMessage;
 
     this.clearElement();
@@ -34,7 +36,7 @@ export default class ResultWinPageView extends AbstractView {
 
          <h2 class="title">Вы настоящий меломан!</h2>
          <div class="main-stat">За&nbsp;${minutes}&nbsp;минуты и ${seconds}&nbsp;секунд
-           <br>вы&nbsp;набрали ${this._userScore.totalScore} баллов (${this._userScore.fastAnswersScore} быстрых)
+           <br>вы&nbsp;набрали ${this._totalScore} баллов (${this._fastAnswersScore} быстрых)
            <br>совершив ${getMistakesCount(this._lives)} ошибки</div>
          <span class="main-comparison">${this._resultMessage}</span>
          <span role="button" tabindex="0" class="main-replay">Сыграть ещё раз</span>

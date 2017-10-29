@@ -9,22 +9,74 @@ import WelcomePage from './components/WelcomePage/WelcomePage';
 import GameState from './data/GameState';
 import getGameResultMessage from './utils/getGameResultMessage';
 
+const PageId = {
+  WELCOME: `welcome`,
+  GAME: `game`,
+  RESULT_TIMEOUT: `timeout`,
+  RESULT_LOOSE: `loose`,
+  RESULT_WIN: `win`
+};
+
 /**
  * Контейнер отрисовки игровых экранов
  */
 class App {
+  constructor() {
+    window.onhashchange = this.onHashChanged.bind(this);
+    this.onHashChanged();
+  }
+
+  onHashChanged() {
+    const [pageId, params] = window.location.hash.replace(`#`, ``).split(`?`);
+    const paramsObject = params && JSON.parse(params);
+    switch (pageId) {
+      case PageId.WELCOME:
+        WelcomePage.init();
+        break;
+      case PageId.GAME:
+        this.showNextPage(GameState.generate());
+        break;
+      case PageId.RESULT_LOOSE:
+        ResultLoosePage.init(getGameResultMessage({lives: 0}));
+        break;
+      case PageId.RESULT_TIMEOUT:
+        ResultTimeoutPage.init(getGameResultMessage({time: 0}));
+        break;
+      case PageId.RESULT_WIN:
+        if (!paramsObject) {
+          this.showWelcomePage();
+          return;
+        }
+
+        const resultMessage = getGameResultMessage({
+          score: paramsObject.totalScore,
+          lives: paramsObject.lives,
+          time: paramsObject.time
+        }, []);
+
+        ResultWinPage.init({
+          lives: paramsObject.lives,
+          time: paramsObject.time,
+          totalScore: paramsObject.totalScore,
+          fastAnswersScore: paramsObject.fastAnswersScore,
+          resultMessage});
+        break;
+      default:
+        break;
+    }
+  }
   /**
    * Показать страницу приветствия
    */
   showWelcomePage() {
-    WelcomePage.init();
+    window.location.hash = PageId.WELCOME;
   }
 
   /**
    * Начать игру
    */
   startGame() {
-    this.showNextPage(GameState.generate());
+    window.location.hash = PageId.GAME;
   }
 
   /**
@@ -34,9 +86,9 @@ class App {
    */
   showNextPage(gameState) {
     if (gameState.time <= 0) {
-      this.showResultTimeoutPage(getGameResultMessage({time: gameState.time}));
+      this.showResultTimeoutPage();
     } else if (gameState.lives <= 0) {
-      this.showResultLoosePage(getGameResultMessage({lives: gameState.lives}));
+      this.showResultLoosePage();
     } else if (gameState.hasNextQuestion) {
       gameState = gameState.iterateQuestion();
 
@@ -46,20 +98,7 @@ class App {
         this.showGenreQuestionPage(gameState);
       }
     } else {
-      const userScore = gameState.userScore;
-      // TODO: вторым параметром передавать результаты других игроков
-      const resultMessage = getGameResultMessage({
-        score: userScore.totalScore,
-        lives: gameState.lives,
-        time: gameState.time
-      }, []);
-
-      this.showResultWinPage({
-        lives: gameState.lives,
-        time: gameState.time,
-        userScore,
-        resultMessage
-      });
+      this.showResultWinPage(gameState);
     }
   }
 
@@ -83,32 +122,32 @@ class App {
 
   /**
    * Показать страницу проигрыша
-   *
-   * @param {string} resultMessage Сообщение результата игры
    */
-  showResultLoosePage(resultMessage) {
-    ResultLoosePage.init(resultMessage);
+  showResultLoosePage() {
+    window.location.hash = PageId.RESULT_LOOSE;
+  }
+
+  /**
+   * Показать страницу окончания времени
+   */
+  showResultTimeoutPage() {
+    window.location.hash = PageId.RESULT_TIMEOUT;
   }
 
   /**
    * Показать страницу окончания времени
    *
-   * @param {string} resultMessage Сообщение результата игры
+   * @param {Object} gameState Состояние игры
    */
-  showResultTimeoutPage(resultMessage) {
-    ResultTimeoutPage.init(resultMessage);
-  }
+  showResultWinPage(gameState) {
+    const paramsString = JSON.stringify({
+      lives: gameState.lives,
+      time: gameState.time,
+      totalScore: gameState.userScore.totalScore,
+      fastAnswersScore: gameState.userScore.fastAnswersScore
+    });
 
-  /**
-   * Показать страницу окончания времени
-   *
-   * @param {number} lives Количество жизней игрока
-   * @param {number} time Оставшееся время игры
-   * @param {Object} userScore Счет игрока
-   * @param {string} resultMessage Сообщение результата игры
-   */
-  showResultWinPage({lives, time, userScore, resultMessage}) {
-    ResultWinPage.init({lives, time, userScore, resultMessage});
+    window.location.hash = `${PageId.RESULT_WIN}?${paramsString}`;
   }
 }
 

@@ -58,7 +58,7 @@ export default class GameState {
     let newGameState = new GameState();
     newGameState._lives = oldGameState._lives;
     newGameState._time = oldGameState._time;
-    newGameState._questions = [...oldGameState._questions];
+    newGameState._questions = oldGameState._questions.slice();
     newGameState._currentQuestionIdx = oldGameState._currentQuestionIdx;
     newGameState._onTimeChangedCallbackSet = new Set(oldGameState._onTimeChangedCallbackSet);
     newGameState._onLivesChangedCallbackSet = new Set(oldGameState._onLivesChangedCallbackSet);
@@ -162,7 +162,7 @@ export default class GameState {
   /**
    * @return {Array<Object>} Возвращает список вопросов текущей игры
    */
-  get ёquestions() {
+  get questions() {
     return this._questions;
   }
 

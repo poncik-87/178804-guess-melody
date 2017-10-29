@@ -15,11 +15,12 @@ class ResultWinPage {
    *
    * @param {number} lives Количество жизней игрока
    * @param {number} time Оставшееся время игры
-   * @param {Object} userScore Счет игрока
+   * @param {number} totalScore Общий счет игрока
+   * @param {number} fastAnswersScore Счет быстрых ответов
    * @param {string} resultMessage Сообщение результата игры
    */
-  init({lives, time, userScore, resultMessage}) {
-    this._view.init({lives, time, userScore, resultMessage});
+  init({lives, time, totalScore, fastAnswersScore, resultMessage}) {
+    this._view.init({lives, time, totalScore, fastAnswersScore, resultMessage});
     renderPage(this._view.element);
 
     this._view.onRestartClick = () => {
