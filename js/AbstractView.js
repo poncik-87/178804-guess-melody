@@ -25,7 +25,15 @@ export default class AbstractView {
     const newElement = this.render();
     this.element.parentNode.replaceChild(newElement, this.element);
     this._element = newElement;
+    this.insertChildren();
     this.bind();
+  }
+
+  /**
+   * Функция очищает элемент
+   */
+  clearElement() {
+    this._element = null;
   }
 
   /**

@@ -53,18 +53,20 @@ const contentTemplate = (questionData) =>
 /**
  * Класс вью для игрового экрана выбора артиста
  */
-export default class MainLevelArtistView extends AbstractView {
+export default class ArtistQuestionPageView extends AbstractView {
   /**
+   * Функция инициализации вью
+   *
    * @param {Object} questionData Объект данных вопроса
    * @param {Object} childViews Дочерние отображения
    * @param {Function} childViews.renderGameStatusView Функция отрисовки статуса игры
    * @param {Function} childViews.renderAudioControlView Функция отрисовки контрола аудио
    */
-  constructor(questionData, childViews) {
-    super();
-
+  init(questionData, childViews) {
     this._questionData = questionData;
     this._childViews = childViews;
+
+    this.clearElement();
   }
 
   /**

@@ -55,20 +55,22 @@ const contentTemplate = (questionData) =>
    </div>`;
 
 /**
- * Класс вью для игрового экрана выбора музыкального жанра
+ * Вью страницы вопроса жанра песни
  */
-export default class MainLevelGenreView extends AbstractView {
+export default class GenreQuestionPageView extends AbstractView {
   /**
+   * Функция инициализации вью
+   *
    * @param {Object} questionData Объект данных вопроса
    * @param {Object} childViews Дочерние отображения
    * @param {Function} childViews.renderGameStatusView Функция отрисовки статуса игры
    * @param {Function[]} childViews.renderAudioControlViewList Массив функций отрисовки контрола аудио
    */
-  constructor(questionData, childViews) {
-    super();
-
+  init(questionData, childViews) {
     this._questionData = questionData;
     this._childViews = childViews;
+
+    this.clearElement();
   }
 
   /**

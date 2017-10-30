@@ -1,4 +1,3 @@
-import welcomePage from './components/welcome/welcomePage';
-import renderPage from './utils/renderPage';
+import App from './App';
 
-renderPage(welcomePage());
+App.showWelcomePage();
