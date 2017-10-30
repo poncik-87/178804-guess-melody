@@ -7,7 +7,6 @@ import ResultTimeoutPage from './components/ResultTimeoutPage/ResultTimeoutPage'
 import ResultWinPage from './components/ResultWinPage/ResultWinPage';
 import WelcomePage from './components/WelcomePage/WelcomePage';
 import GameState from './data/GameState';
-import getGameResultMessage from './utils/getGameResultMessage';
 
 const PageId = {
   WELCOME: `welcome`,
@@ -37,10 +36,10 @@ class App {
         this.showNextPage(GameState.generate());
         break;
       case PageId.RESULT_LOOSE:
-        ResultLoosePage.init(getGameResultMessage({lives: 0}));
+        ResultLoosePage.init();
         break;
       case PageId.RESULT_TIMEOUT:
-        ResultTimeoutPage.init(getGameResultMessage({time: 0}));
+        ResultTimeoutPage.init();
         break;
       case PageId.RESULT_WIN:
         if (!paramsObject) {
@@ -48,18 +47,11 @@ class App {
           return;
         }
 
-        const resultMessage = getGameResultMessage({
-          score: paramsObject.totalScore,
-          lives: paramsObject.lives,
-          time: paramsObject.time
-        }, []);
-
         ResultWinPage.init({
           lives: paramsObject.lives,
           time: paramsObject.time,
           totalScore: paramsObject.totalScore,
-          fastAnswersScore: paramsObject.fastAnswersScore,
-          resultMessage});
+          fastAnswersScore: paramsObject.fastAnswersScore});
         break;
       default:
         break;

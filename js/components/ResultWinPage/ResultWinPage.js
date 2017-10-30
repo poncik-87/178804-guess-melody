@@ -1,6 +1,7 @@
 import renderPage from '../../utils/renderPage';
 import ResultWinPageView from './ResultWinPageView';
 import App from '../../App';
+import getGameResultMessage from '../../utils/getGameResultMessage';
 
 /**
  * Страница с результатом выигрыша
@@ -17,9 +18,14 @@ class ResultWinPage {
    * @param {number} time Оставшееся время игры
    * @param {number} totalScore Общий счет игрока
    * @param {number} fastAnswersScore Счет быстрых ответов
-   * @param {string} resultMessage Сообщение результата игры
    */
-  init({lives, time, totalScore, fastAnswersScore, resultMessage}) {
+  init({lives, time, totalScore, fastAnswersScore}) {
+    const resultMessage = getGameResultMessage({
+      score: totalScore,
+      lives,
+      time
+    }, []);
+
     this._view.init({lives, time, totalScore, fastAnswersScore, resultMessage});
     renderPage(this._view.element);
 

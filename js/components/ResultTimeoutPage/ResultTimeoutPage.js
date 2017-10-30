@@ -1,6 +1,7 @@
 import renderPage from '../../utils/renderPage';
 import ResultTimeoutPageView from './ResultTimeoutPageView';
 import App from '../../App';
+import getGameResultMessage from '../../utils/getGameResultMessage';
 
 /**
  * Страница результата истекшего времени
@@ -12,11 +13,9 @@ class ResultTimeoutPage {
 
   /**
    * Функция инициализации экрана
-   *
-   * @param {string} resultMessage Сообщение с результатом
    */
-  init(resultMessage) {
-    this._view.init(resultMessage);
+  init() {
+    this._view.init(getGameResultMessage({time: 0}));
     renderPage(this._view.element);
 
     this._view.onRestartClick = () => {

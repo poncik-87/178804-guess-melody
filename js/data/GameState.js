@@ -37,7 +37,7 @@ export default class GameState {
     let newGameState = new GameState();
     newGameState._lives = initState.lives;
     newGameState._time = initState.time;
-    newGameState._questions = initState.questions;
+    newGameState._questions = [];
     newGameState._currentQuestionIdx = initState.currentQuestionIdx;
     repeatTimes(GAME_LENGTH, () => {
       const getQuestion = getRandomListElement([GameState._getArtistQuestion, GameState._getGenreQuestion]);
