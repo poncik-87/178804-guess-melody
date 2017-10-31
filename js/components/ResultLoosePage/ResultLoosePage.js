@@ -1,6 +1,7 @@
 import renderPage from '../../utils/renderPage';
 import ResultLoosePageView from './ResultLoosePageView';
 import App from '../../App';
+import getGameResultMessage from '../../utils/getGameResultMessage';
 
 /**
  * Страница результата проигрыша
@@ -12,11 +13,9 @@ class ResultLoosePage {
 
   /**
    * Функция инициализации страницы
-   *
-   * @param {string} resultMessage Сообщение с результатом
    */
-  init(resultMessage) {
-    this._view.init(resultMessage);
+  init() {
+    this._view.init(getGameResultMessage({lives: 0}));
     renderPage(this._view.element);
 
     this._view.onRestartClick = () => {
