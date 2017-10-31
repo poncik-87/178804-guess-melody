@@ -7,6 +7,8 @@ import ResultTimeoutPage from './components/ResultTimeoutPage/ResultTimeoutPage'
 import ResultWinPage from './components/ResultWinPage/ResultWinPage';
 import WelcomePage from './components/WelcomePage/WelcomePage';
 import GameState from './data/GameState';
+import Loader from './Loader';
+import adaptServerData from './utils/adaptServerData';
 
 const PageId = {
   WELCOME: `welcome`,
@@ -22,7 +24,13 @@ const PageId = {
 class App {
   constructor() {
     window.onhashchange = this.onHashChanged.bind(this);
-    this.onHashChanged();
+
+    Loader.load(`questions`).
+        then(adaptServerData).
+        then((data) => {
+          this._data = data;
+          this.onHashChanged();
+        });
   }
 
   onHashChanged() {
@@ -33,7 +41,7 @@ class App {
         WelcomePage.init();
         break;
       case PageId.GAME:
-        this.showNextPage(GameState.generate());
+        this.showNextPage(GameState.generate(this._data));
         break;
       case PageId.RESULT_LOOSE:
         ResultLoosePage.init();

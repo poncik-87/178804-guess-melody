@@ -23,8 +23,8 @@ const GameResult = {
  * Тип игрового вопроса
  */
 const QuestionType = {
-  ARTIST: `ARTIST`,
-  GENRE: `GENRE`
+  ARTIST: `artist`,
+  GENRE: `genre`
 };
 
 export {Answer, GameResult, QuestionType};

@@ -1,9 +1,6 @@
-import {Answer, QuestionType} from "../consts";
+import {Answer} from "../consts";
 
 import timeConverter from '../utils/timeConverter';
-import repeatTimes from '../utils/repeatTimes';
-import getRandomListElement from '../utils/getRandomListElement';
-import gameData from './gameData';
 
 const initState = {
   lives: 3,
@@ -14,10 +11,6 @@ const initState = {
   questions: [],
   currentQuestionIdx: -1
 };
-
-const GAME_LENGTH = 10;
-const ARTIST_ANSWER_VARIANTS_COUNT = 3;
-const GENRE_ANSWER_VARIANTS_COUNT = 4;
 
 /**
  * Класс состояния игры
@@ -31,19 +24,16 @@ export default class GameState {
   /**
    * Функция генерирует новое игровое состояние
    *
+   * @param {Array<Object>} data Исходные данные игры
+   *
    * @return {GameState} Новое состояние игры
    */
-  static generate() {
+  static generate(data) {
     let newGameState = new GameState();
     newGameState._lives = initState.lives;
     newGameState._time = initState.time;
-    newGameState._questions = [];
+    newGameState._questions = data.map((dataItem) => Object.assign({}, dataItem));
     newGameState._currentQuestionIdx = initState.currentQuestionIdx;
-    repeatTimes(GAME_LENGTH, () => {
-      const getQuestion = getRandomListElement([GameState._getArtistQuestion, GameState._getGenreQuestion]);
-      newGameState._questions.push(getQuestion(gameData));
-    });
-
     return newGameState;
   }
 
@@ -64,81 +54,6 @@ export default class GameState {
     newGameState._onLivesChangedCallbackSet = new Set(oldGameState._onLivesChangedCallbackSet);
 
     return newGameState;
-  }
-
-  /**
-   * Функция возвращает случайно сформированный объект вопроса для категории "артист"
-   * Механизм случайной генерации:
-   * -сначала из массива данных выбираются ANSWER_VARIANTS_COUNT случайных неповторяющихся объекта
-   * -потом из них случайно выбирается правильный ответ для вопроса
-   *
-   * @param {Array<Object>} data Исходные данные игры
-   * @param {string} data[].id Идентификатор песни
-   * @param {string} data[].artist Имя исполнителя
-   * @param {string} data[].image Url картинки исполнителя
-   * @param {string} data[].src Url песни
-   *
-   * @return {Object} Объект вопроса категории "артист"
-   */
-  static _getArtistQuestion(data) {
-    // массив копируется, чтобы не влиять на внешние данные
-    data = data.slice();
-
-    let answers = {};
-    for (let i = 0; i < ARTIST_ANSWER_VARIANTS_COUNT; i++) {
-      const randomDataItem = getRandomListElement(data);
-      // элемент массива удаляется из него, чтобы не было повторяющихся вариантов ответов
-      data.splice(data.indexOf(randomDataItem), 1);
-
-      answers[randomDataItem.id] = {
-        artist: randomDataItem.artist,
-        image: randomDataItem.image,
-        src: randomDataItem.src
-      };
-    }
-
-    return {
-      writeAnswerId: getRandomListElement(Object.keys(answers)),
-      answers,
-      type: QuestionType.ARTIST
-    };
-  }
-
-  /**
-   * Функция возвращает случайно сформированный объект вопроса для категории "жанр"
-   * Механизм случайной генерации:
-   * -сначала из массива данных выбираются ANSWER_VARIANTS_COUNT случайных неповторяющихся объекта
-   * -потом из них случайно выбирается правильный ответ для вопроса
-   *
-   * @param {Array<Object>} data Исходные данные игры
-   * @param {string} data[].id Идентификатор песни
-   * @param {string} data[].genre Жанр песни
-   * @param {string} data[].src Url песни
-   *
-   * @return {Object} Объект вопроса категории "жанр"
-   */
-  static _getGenreQuestion(data) {
-    // массив копируется, чтобы не влиять на внешние данные
-    data = data.slice();
-
-    let answers = [];
-    for (let i = 0; i < GENRE_ANSWER_VARIANTS_COUNT; i++) {
-      const randomDataItem = getRandomListElement(data);
-      // элемент массива удаляется из него, чтобы не было повторяющихся вариантов ответов
-      data.splice(data.indexOf(randomDataItem), 1);
-
-      answers.push({
-        id: randomDataItem.id,
-        src: randomDataItem.src,
-        genre: randomDataItem.genre
-      });
-    }
-
-    return {
-      writeAnswerGenre: getRandomListElement(answers).genre,
-      answers,
-      type: QuestionType.GENRE
-    };
   }
 
   /**
