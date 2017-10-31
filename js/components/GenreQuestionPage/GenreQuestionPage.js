@@ -61,10 +61,12 @@ class GenreQuestionPage {
   /**
    * Обработчик нажатия кнопки перехода к следующему экрану
    *
-   * @param {boolean} isCorrectAnswer Признак правильности ответа
+   * @param {Array<string>} checkedAnswerGenres Признак правильности ответа
    * @private
    */
-  _onAnswerClick(isCorrectAnswer) {
+  _onAnswerClick(checkedAnswerGenres) {
+    const isCorrectAnswer = !checkedAnswerGenres.some((genre) => genre !== this._gameState.currentQuestion.genre);
+
     if (isCorrectAnswer) {
       this._gameState = this._gameState.setQuestionAnswer(Answer.CORRECT);
     } else {

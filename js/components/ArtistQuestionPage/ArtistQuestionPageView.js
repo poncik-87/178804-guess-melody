@@ -1,25 +1,32 @@
 import AbstractView from '../../AbstractView';
 
-const taskTemplate =
-  `<h2 class="title main-title">Кто исполняет эту песню?</h2>`;
+/**
+ * Функция возвращает шаблон блока вопроса
+ *
+ * @param {string} question Текст вопроса
+ *
+ * @return {string} шаблон блока вопроса
+ */
+const taskTemplate = (question) =>
+  `<h2 class="title main-title">${question}</h2>`;
 
 /**
  * Функция возвращает шаблон блока ответа
  *
- * @param {string} songId Идентификатор песни
- * @param {Object} songData Объект данных песни
- * @param {string} songData.artist Имя исполнителя
- * @param {string} songData.image Изображение исполнителя
+ * @param {Object} answer Данные варианта ответа
+ * @param {string} answer.id Идентификатор ответа
+ * @param {string} answer.title Имя исполнителя
+ * @param {string} answer.image Изображение исполнителя
  *
- * @return {string} шаблон блока аудио
+ * @return {string} шаблон блока ответа
  */
-const answerTemplate = (songId, songData) =>
-  `<div class="main-answer-wrapper" data-answer-id=${songId}>
-     <input class="main-answer-r" type="radio" id="answer-${songData.artist}" name="answer" value="val-${songData.artist}"/>
-     <label class="main-answer" for="answer-${songData.artist}">
-       <img class="main-answer-preview" src="${songData.image}"
-            alt="${songData.artist}" width="134" height="134">
-       ${songData.artist}
+const answerTemplate = (answer) =>
+  `<div class="main-answer-wrapper" data-answer-id=${answer.id}>
+     <input class="main-answer-r" type="radio" id="answer-${answer.title}" name="answer" value="val-${answer.title}"/>
+     <label class="main-answer" for="answer-${answer.title}">
+       <img class="main-answer-preview" src="${answer.image.url}"
+            alt="${answer.title}" width="134" height="134">
+       ${answer.title}
      </label>
    </div>`;
 
@@ -32,21 +39,21 @@ const answerTemplate = (songId, songData) =>
  */
 const answersFormTemplate = (answers) =>
   `<form class="main-list">
-     ${[...Object.keys(answers)].map((id) => answerTemplate(id, answers[id])).join(``)}
+     ${answers.map(answerTemplate).join(``)}
    </form>`;
 
 /**
  * Функция возвращает шаблон блока контента
  *
  * @param {Object} questionData Объект данных вопроса
- * @param {string} questionData.writeAnswerId Идентификатор правильного ответа
+ * @param {string} questionData.question Текст вопроса
  * @param {Object} questionData.answers Объект с вариантами ответов
  *
  * @return {string} шаблон блока контента
  */
 const contentTemplate = (questionData) =>
   `<div class="main-wrap">
-     ${taskTemplate}
+     ${taskTemplate(questionData.question)}
      ${answersFormTemplate(questionData.answers)}
    </div>`;
 
@@ -97,7 +104,7 @@ export default class ArtistQuestionPageView extends AbstractView {
     const answerAreaNodesList = [...this.element.querySelectorAll(`.main-answer-wrapper`)];
     answerAreaNodesList.forEach((answerAreaNode) => {
       answerAreaNode.addEventListener(`click`, () => {
-        this.onAnswerClick(this._questionData.writeAnswerId === answerAreaNode.dataset.answerId);
+        this.onAnswerClick(answerAreaNode.dataset.answerId);
       });
     });
   }

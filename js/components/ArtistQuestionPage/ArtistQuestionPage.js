@@ -22,14 +22,12 @@ class ArtistQuestionPage {
    * @param {number} gameState.time Оставшееся время игры
    * @param {Object} gameState.currentQuestion Текущий вопрос игры
    * @param {Array<Object>} gameState.currentQuestion.answers Ответы на текущий вопрос
-   * @param {number} gameState.currentQuestion.writeAnswerId Идентификатор правильного ответа на текущий вопрос
    */
   init(gameState) {
     this._gameState = gameState;
 
     const gameStatus = new GameStatus(gameState);
-    const writeAnswer = gameState.currentQuestion.answers[this._gameState.currentQuestion.writeAnswerId];
-    const audioControl = new AudioControl(writeAnswer.src);
+    const audioControl = new AudioControl(gameState.currentQuestion.src);
 
     gameStatus.init({
       lives: this._gameState.lives,
@@ -63,11 +61,12 @@ class ArtistQuestionPage {
   /**
    * Обработчик нажатия кнопки перехода к следующему экрану
    *
-   * @param {boolean} isCorrectAnswer Признак правильности ответа
+   * @param {string} answerId Идентификатор ответа
    * @private
    */
-  _onAnswerClick(isCorrectAnswer) {
-    if (isCorrectAnswer) {
+  _onAnswerClick(answerId) {
+    const answer = this._gameState.currentQuestion.answers.find(({id}) => id === answerId);
+    if (answer && answer.isCorrect) {
       this._gameState = this._gameState.setQuestionAnswer(Answer.CORRECT);
     } else {
       this._gameState = this._gameState.setQuestionAnswer(Answer.INCORRECT).dropLive();

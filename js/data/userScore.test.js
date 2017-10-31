@@ -14,7 +14,8 @@ import repeatTimes from '../utils/repeatTimes';
  * @return {GameState} Данные игры с заданными характеристиками
  */
 const getSimulatedGameData = (lives, correctAnswersCount, fastCorrectAnswersCount, incorrectAnswersCount) => {
-  let gameState = GameState.generate();
+  const data = Array(10).fill({});
+  let gameState = GameState.generate(data);
   if (gameState.lives < lives) {
     // невалидное количество жизней
     return null;

@@ -3,19 +3,18 @@ import AbstractView from '../../AbstractView';
 /**
  * Функция возвращает блок текста вопроса
  *
- * @param {string} genre Жанр музыки вопроса
+ * @param {string} question Текст вопроса
  *
  * @return {string} шаблон блока вопроса
  */
-const taskTemplate = (genre) =>
-  `<h2 class="title">Выберите ${genre} треки</h2>`;
+const taskTemplate = (question) =>
+  `<h2 class="title">${question}</h2>`;
 
 /**
- * Функция возвращает блок ответа
+ * Функция возвращает шаблон блока ответа
  *
  * @param {Object} answer Объект варианта ответа
  * @param {string} answer.id Идентификатор песни
- * @param {string} answer.src Url песни
  * @param {string} answer.genre Жанр песни
  *
  * @return {string} шаблон блока ответа
@@ -43,14 +42,14 @@ const answersFormTemplate = (answers) =>
  * Функция возвращает шаблон блока контента
  *
  * @param {Object} questionData Объект данных вопроса
- * @param {string} questionData.writeAnswerGenre Жанр правильного ответа
+ * @param {string} questionData.question Текст вопроса
  * @param {Object} questionData.answers Объект с вариантами ответов
  *
  * @return {string} шаблон блока контента
  */
 const contentTemplate = (questionData) =>
   `<div class="main-wrap">
-     ${taskTemplate(questionData.writeAnswerGenre)}
+     ${taskTemplate(questionData.question)}
      ${answersFormTemplate(questionData.answers)}
    </div>`;
 
@@ -116,9 +115,9 @@ export default class GenreQuestionPageView extends AbstractView {
     sendAnswerButtonNode.addEventListener(`click`, (evt) => {
       evt.preventDefault();
 
-      const isCorrectAnswer = !answerCheckboxNodeList.filter(({checked}) => checked).some(({value}) => value !== this._questionData.writeAnswerGenre);
+      const checkedAnswerGenres = answerCheckboxNodeList.filter(({checked}) => checked).map(({value}) => value);
 
-      this.onAnswerClick(isCorrectAnswer);
+      this.onAnswerClick(checkedAnswerGenres);
     });
   }
 
