@@ -62,6 +62,17 @@ const contentTemplate = (questionData) =>
  */
 export default class ArtistQuestionPageView extends AbstractView {
   /**
+   * @inheritdoc
+   */
+  get template() {
+    return (
+      `<section class="main main--level main--level-artist">
+         ${contentTemplate(this._questionData)}
+       </section>`
+    );
+  }
+
+  /**
    * Функция инициализации вью
    *
    * @param {Object} questionData Объект данных вопроса
@@ -74,17 +85,6 @@ export default class ArtistQuestionPageView extends AbstractView {
     this._childViews = childrenViews;
 
     this.clearElement();
-  }
-
-  /**
-   * @inheritdoc
-   */
-  get template() {
-    return (
-      `<section class="main main--level main--level-artist">
-         ${contentTemplate(this._questionData)}
-       </section>`
-    );
   }
 
   /**

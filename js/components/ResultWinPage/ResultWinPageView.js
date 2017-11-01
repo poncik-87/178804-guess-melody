@@ -7,25 +7,6 @@ import timeConverter from '../../utils/timeConverter';
  */
 export default class ResultWinPageView extends AbstractView {
   /**
-   * Функция инициализации вью
-   *
-   * @param {number} lives Количество жизней игрока
-   * @param {number} time Оставшееся время игры
-   * @param {number} totalScore Общий счет игрока
-   * @param {number} fastAnswersScore Счет быстрых ответов
-   * @param {string} resultMessage Сообщение результата игры
-   */
-  init({lives, time, totalScore, fastAnswersScore, resultMessage}) {
-    this._lives = lives;
-    this._time = time;
-    this._totalScore = totalScore;
-    this._fastAnswersScore = fastAnswersScore;
-    this._resultMessage = resultMessage;
-
-    this.clearElement();
-  }
-
-  /**
    * @inheritdoc
    */
   get template() {
@@ -42,6 +23,25 @@ export default class ResultWinPageView extends AbstractView {
          <span role="button" tabindex="0" class="main-replay">Сыграть ещё раз</span>
        </section>`
     );
+  }
+
+  /**
+   * Функция инициализации вью
+   *
+   * @param {number} lives Количество жизней игрока
+   * @param {number} time Оставшееся время игры
+   * @param {number} totalScore Общий счет игрока
+   * @param {number} fastAnswersScore Счет быстрых ответов
+   * @param {string} resultMessage Сообщение результата игры
+   */
+  init({lives, time, totalScore, fastAnswersScore, resultMessage}) {
+    this._lives = lives;
+    this._time = time;
+    this._totalScore = totalScore;
+    this._fastAnswersScore = fastAnswersScore;
+    this._resultMessage = resultMessage;
+
+    this.clearElement();
   }
 
   /**

@@ -27,6 +27,15 @@ export default class GameStatus {
   }
 
   /**
+   * Колбэк отрисовки вью в родителе
+   *
+   * @return {HTMLElement} Элемент блока статуса игры
+   */
+  renderView() {
+    return this._view.element;
+  }
+
+  /**
    * Колбэк обработки изменения оставшегося времени игры
    *
    * @param {number} time Оставшееся время игры
@@ -42,14 +51,5 @@ export default class GameStatus {
    */
   onLivesChanged(lives) {
     this._view.updateLives(lives);
-  }
-
-  /**
-   * Колбэк отрисовки вью в родителе
-   *
-   * @return {HTMLElement} Элемент блока статуса игры
-   */
-  renderView() {
-    return this._view.element;
   }
 }

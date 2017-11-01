@@ -36,6 +36,46 @@ class App {
         });
   }
 
+  /**
+   * Показать страницу приветствия
+   */
+  showWelcomePage() {
+    window.location.hash = PageId.WELCOME;
+  }
+
+  /**
+   * Начать игру
+   */
+  startGame() {
+    window.location.hash = PageId.GAME;
+  }
+
+  /**
+   * Показать следующий экран
+   *
+   * @param {GameState} gameState Состояние игры
+   */
+  showNextPage(gameState) {
+    if (gameState.time <= 0) {
+      App.showResultTimeoutPage();
+    } else if (gameState.lives <= 0) {
+      App.showResultLoosePage();
+    } else if (gameState.hasNextQuestion) {
+      gameState = gameState.iterateQuestion();
+
+      if (gameState.currentQuestion.type === QuestionType.ARTIST) {
+        App.showArtistQuestionPage(gameState);
+      } else if (gameState.currentQuestion.type === QuestionType.GENRE) {
+        App.showGenreQuestionPage(gameState);
+      }
+    } else {
+      App.showResultWinPage(gameState);
+    }
+  }
+
+  /**
+   * Обработчик изменения хеша
+   */
   onHashChanged() {
     const [pageId, params] = window.location.hash.replace(`#`, ``).split(`?`);
     const paramsObject = params && JSON.parse(params);
@@ -71,49 +111,13 @@ class App {
         break;
     }
   }
-  /**
-   * Показать страницу приветствия
-   */
-  showWelcomePage() {
-    window.location.hash = PageId.WELCOME;
-  }
-
-  /**
-   * Начать игру
-   */
-  startGame() {
-    window.location.hash = PageId.GAME;
-  }
-
-  /**
-   * Показать следующий экран
-   *
-   * @param {GameState} gameState Состояние игры
-   */
-  showNextPage(gameState) {
-    if (gameState.time <= 0) {
-      this.showResultTimeoutPage();
-    } else if (gameState.lives <= 0) {
-      this.showResultLoosePage();
-    } else if (gameState.hasNextQuestion) {
-      gameState = gameState.iterateQuestion();
-
-      if (gameState.currentQuestion.type === QuestionType.ARTIST) {
-        this.showArtistQuestionPage(gameState);
-      } else if (gameState.currentQuestion.type === QuestionType.GENRE) {
-        this.showGenreQuestionPage(gameState);
-      }
-    } else {
-      this.showResultWinPage(gameState);
-    }
-  }
 
   /**
    * Показать страницу вопроса автора песни
    *
    * @param {Object} gameState Состояние игры
    */
-  showArtistQuestionPage(gameState) {
+  static showArtistQuestionPage(gameState) {
     ArtistQuestionPage.init(gameState);
   }
 
@@ -122,21 +126,21 @@ class App {
    *
    * @param {Object} gameState Состояние игры
    */
-  showGenreQuestionPage(gameState) {
+  static showGenreQuestionPage(gameState) {
     GenreQuestionPage.init(gameState);
   }
 
   /**
    * Показать страницу проигрыша
    */
-  showResultLoosePage() {
+  static showResultLoosePage() {
     window.location.hash = PageId.RESULT_LOOSE;
   }
 
   /**
    * Показать страницу окончания времени
    */
-  showResultTimeoutPage() {
+  static showResultTimeoutPage() {
     window.location.hash = PageId.RESULT_TIMEOUT;
   }
 
@@ -145,7 +149,7 @@ class App {
    *
    * @param {Object} gameState Состояние игры
    */
-  showResultWinPage(gameState) {
+  static showResultWinPage(gameState) {
     const statsData = {
       lives: gameState.lives,
       time: gameState.time,

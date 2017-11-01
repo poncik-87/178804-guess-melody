@@ -21,40 +21,6 @@ export default class GameState {
     this._onTimeChangedCallbackSet = new Set();
     this._onLivesChangedCallbackSet = new Set();
   }
-  /**
-   * Функция генерирует новое игровое состояние
-   *
-   * @param {Array<Object>} data Исходные данные игры
-   *
-   * @return {GameState} Новое состояние игры
-   */
-  static generate(data) {
-    let newGameState = new GameState();
-    newGameState._lives = initState.lives;
-    newGameState._time = initState.time;
-    newGameState._questions = data.map((dataItem) => Object.assign({}, dataItem));
-    newGameState._currentQuestionIdx = initState.currentQuestionIdx;
-    return newGameState;
-  }
-
-  /**
-   * Функция копирует игровое состояние
-   *
-   * @param {GameState} oldGameState Старое игровое состояние
-   * @return {GameState} Новое состояние игры
-   * @private
-   */
-  static _copy(oldGameState) {
-    let newGameState = new GameState();
-    newGameState._lives = oldGameState._lives;
-    newGameState._time = oldGameState._time;
-    newGameState._questions = oldGameState._questions.slice();
-    newGameState._currentQuestionIdx = oldGameState._currentQuestionIdx;
-    newGameState._onTimeChangedCallbackSet = new Set(oldGameState._onTimeChangedCallbackSet);
-    newGameState._onLivesChangedCallbackSet = new Set(oldGameState._onLivesChangedCallbackSet);
-
-    return newGameState;
-  }
 
   /**
    * Количество жизней игрока
@@ -201,5 +167,40 @@ export default class GameState {
    */
   subscribeOnLivesChanged(callback) {
     this._onLivesChangedCallbackSet.add(callback);
+  }
+
+  /**
+   * Функция генерирует новое игровое состояние
+   *
+   * @param {Array<Object>} data Исходные данные игры
+   *
+   * @return {GameState} Новое состояние игры
+   */
+  static generate(data) {
+    let newGameState = new GameState();
+    newGameState._lives = initState.lives;
+    newGameState._time = initState.time;
+    newGameState._questions = data.map((dataItem) => Object.assign({}, dataItem));
+    newGameState._currentQuestionIdx = initState.currentQuestionIdx;
+    return newGameState;
+  }
+
+  /**
+   * Функция копирует игровое состояние
+   *
+   * @param {GameState} oldGameState Старое игровое состояние
+   * @return {GameState} Новое состояние игры
+   * @private
+   */
+  static _copy(oldGameState) {
+    let newGameState = new GameState();
+    newGameState._lives = oldGameState._lives;
+    newGameState._time = oldGameState._time;
+    newGameState._questions = oldGameState._questions.slice();
+    newGameState._currentQuestionIdx = oldGameState._currentQuestionIdx;
+    newGameState._onTimeChangedCallbackSet = new Set(oldGameState._onTimeChangedCallbackSet);
+    newGameState._onLivesChangedCallbackSet = new Set(oldGameState._onLivesChangedCallbackSet);
+
+    return newGameState;
   }
 }

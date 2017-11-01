@@ -43,6 +43,18 @@ const livesTemplate = (lives) =>
  */
 export default class GameStatusView extends AbstractView {
   /**
+   * @inheritdoc
+   */
+  get template() {
+    return (
+      `<div>
+         ${timerTemplate(timeConverter.numberToTime(this._time))}
+         ${livesTemplate(this._lives)}
+       </div>`
+    );
+  }
+
+  /**
    * Функция инициализации вью
    *
    * @param {number} lives Количество жизней игрока
@@ -73,17 +85,5 @@ export default class GameStatusView extends AbstractView {
     this._lives = lives;
 
     super.update();
-  }
-
-  /**
-   * @inheritdoc
-   */
-  get template() {
-    return (
-      `<div>
-         ${timerTemplate(timeConverter.numberToTime(this._time))}
-         ${livesTemplate(this._lives)}
-       </div>`
-    );
   }
 }

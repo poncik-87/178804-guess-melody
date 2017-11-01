@@ -5,17 +5,6 @@ import AbstractView from '../../AbstractView';
  */
 export default class ResultTimeoutPageView extends AbstractView {
   /**
-   * Функция инициализации вью
-   *
-   * @param {string} resultMessage Сообщение с результатом
-   */
-  init(resultMessage) {
-    this._resultMessage = resultMessage;
-
-    this.clearElement();
-  }
-
-  /**
    * @inheritdoc
    */
   get template() {
@@ -28,6 +17,17 @@ export default class ResultTimeoutPageView extends AbstractView {
          <span role="button" tabindex="0" class="main-replay">Попробовать ещё раз</span>
        </section>`
     );
+  }
+
+  /**
+   * Функция инициализации вью
+   *
+   * @param {string} resultMessage Сообщение с результатом
+   */
+  init(resultMessage) {
+    this._resultMessage = resultMessage;
+
+    this.clearElement();
   }
 
   /**
