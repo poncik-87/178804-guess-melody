@@ -18,13 +18,14 @@ class ResultWinPage {
    * @param {number} time Оставшееся время игры
    * @param {number} totalScore Общий счет игрока
    * @param {number} fastAnswersScore Счет быстрых ответов
+   * @param {Array<Object>} statsData Статистика прохождения игры
    */
-  init({lives, time, totalScore, fastAnswersScore}) {
+  init({lives, time, totalScore, fastAnswersScore, statsData}) {
     const resultMessage = getGameResultMessage({
       score: totalScore,
       lives,
       time
-    }, []);
+    }, statsData);
 
     this._view.init({lives, time, totalScore, fastAnswersScore, resultMessage});
     renderPage(this._view.element);

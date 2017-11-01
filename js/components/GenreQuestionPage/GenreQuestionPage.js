@@ -28,14 +28,14 @@ class GenreQuestionPage {
 
     const gameStatus = new GameStatus(gameState);
     const renderAudioControlViewList = this._gameState.currentQuestion.answers.map(({src}) =>
-      (new AudioControl(src)).renderAudioControlView);
+      (new AudioControl(src)).renderView);
 
     gameStatus.init({
       lives: this._gameState.lives,
       time: this._gameState.time
     });
     this._view.init(this._gameState.currentQuestion, {
-      renderGameStatusView: gameStatus.renderGameStatusView,
+      renderGameStatusView: gameStatus.renderView,
       renderAudioControlViewList});
 
     renderPage(this._view.element);

@@ -18,6 +18,9 @@ const PageId = {
   RESULT_WIN: `win`
 };
 
+const SERVER_GAME_DATA_URL = `questions`;
+const SERVER_STATS_URL = `stats/AlexeyKomarov178804`;
+
 /**
  * Контейнер отрисовки игровых экранов
  */
@@ -25,7 +28,7 @@ class App {
   constructor() {
     window.onhashchange = this.onHashChanged.bind(this);
 
-    Loader.load(`questions`).
+    Loader.load(SERVER_GAME_DATA_URL).
         then(adaptServerData).
         then((data) => {
           this._data = data;
@@ -55,11 +58,14 @@ class App {
           return;
         }
 
-        ResultWinPage.init({
-          lives: paramsObject.lives,
-          time: paramsObject.time,
-          totalScore: paramsObject.totalScore,
-          fastAnswersScore: paramsObject.fastAnswersScore});
+        Loader.load(SERVER_STATS_URL).then((statsData) => {
+          ResultWinPage.init({
+            lives: paramsObject.lives,
+            time: paramsObject.time,
+            totalScore: paramsObject.totalScore,
+            fastAnswersScore: paramsObject.fastAnswersScore,
+            statsData});
+        });
         break;
       default:
         break;
@@ -140,14 +146,22 @@ class App {
    * @param {Object} gameState Состояние игры
    */
   showResultWinPage(gameState) {
-    const paramsString = JSON.stringify({
+    const statsData = {
+      lives: gameState.lives,
+      time: gameState.time,
+      score: gameState.userScore.totalScore
+    };
+    const resultData = {
       lives: gameState.lives,
       time: gameState.time,
       totalScore: gameState.userScore.totalScore,
       fastAnswersScore: gameState.userScore.fastAnswersScore
-    });
+    };
 
-    window.location.hash = `${PageId.RESULT_WIN}?${paramsString}`;
+    Loader.save(statsData, SERVER_STATS_URL).then(() => {
+      const paramsString = JSON.stringify(resultData);
+      window.location.hash = `${PageId.RESULT_WIN}?${paramsString}`;
+    });
   }
 }
 

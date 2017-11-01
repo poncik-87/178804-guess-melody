@@ -34,8 +34,8 @@ class ArtistQuestionPage {
       time: this._gameState.time
     });
     this._view.init(this._gameState.currentQuestion, {
-      renderGameStatusView: gameStatus.renderGameStatusView,
-      renderAudioControlView: audioControl.renderAudioControlView
+      renderGameStatusView: gameStatus.renderView,
+      renderAudioControlView: audioControl.renderView
     });
 
     renderPage(this._view.element);

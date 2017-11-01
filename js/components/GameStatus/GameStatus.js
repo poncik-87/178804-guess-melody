@@ -13,7 +13,7 @@ export default class GameStatus {
     gameState.subscribeOnTimeChanged(this.onTimeChanged.bind(this));
     gameState.subscribeOnLivesChanged(this.onLivesChanged.bind(this));
 
-    this.renderGameStatusView = this.renderGameStatusView.bind(this);
+    this.renderView = this.renderView.bind(this);
   }
 
   /**
@@ -49,7 +49,7 @@ export default class GameStatus {
    *
    * @return {HTMLElement} Элемент блока статуса игры
    */
-  renderGameStatusView() {
+  renderView() {
     return this._view.element;
   }
 }
