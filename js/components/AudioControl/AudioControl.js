@@ -10,7 +10,7 @@ export default class AudioControl {
   constructor(src) {
     this._view = new AudioControlView(src);
 
-    this.renderAudioControlView = this.renderAudioControlView.bind(this);
+    this.renderView = this.renderView.bind(this);
   }
 
   /**
@@ -18,7 +18,7 @@ export default class AudioControl {
    *
    * @return {HTMLElement} Элемент контрола
    */
-  renderAudioControlView() {
+  renderView() {
     return this._view.element;
   }
 }

@@ -65,13 +65,13 @@ export default class ArtistQuestionPageView extends AbstractView {
    * Функция инициализации вью
    *
    * @param {Object} questionData Объект данных вопроса
-   * @param {Object} childViews Дочерние отображения
-   * @param {Function} childViews.renderGameStatusView Функция отрисовки статуса игры
-   * @param {Function} childViews.renderAudioControlView Функция отрисовки контрола аудио
+   * @param {Object} childrenViews Дочерние отображения
+   * @param {Function} childrenViews.renderGameStatusView Функция отрисовки статуса игры
+   * @param {Function} childrenViews.renderAudioControlView Функция отрисовки контрола аудио
    */
-  init(questionData, childViews) {
+  init(questionData, childrenViews) {
     this._questionData = questionData;
-    this._childViews = childViews;
+    this._childViews = childrenViews;
 
     this.clearElement();
   }
