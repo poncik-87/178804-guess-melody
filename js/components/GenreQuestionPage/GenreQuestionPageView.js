@@ -63,7 +63,7 @@ export default class GenreQuestionPageView extends AbstractView {
    * @param {Object} questionData Объект данных вопроса
    * @param {Object} childrenViews Дочерние отображения
    * @param {Function} childrenViews.renderGameStatusView Функция отрисовки статуса игры
-   * @param {Function[]} childrenViews.renderAudioControlViewList Массив функций отрисовки контрола аудио
+   * @param {Function[]} childrenViews.renderAudioControlViewsList Массив функций отрисовки контрола аудио
    */
   init(questionData, childrenViews) {
     this._questionData = questionData;
@@ -94,7 +94,7 @@ export default class GenreQuestionPageView extends AbstractView {
     for (let i = 0, length = answersNodeList.length; i < length; i++) {
       const answerNode = answersNodeList[i];
       const answerInputNode = answerNode.querySelector(`input`);
-      answerNode.insertBefore(this._childViews.renderAudioControlViewList[i](), answerInputNode);
+      answerNode.insertBefore(this._childViews.renderAudioControlViewsList[i](), answerInputNode);
     }
   }
 

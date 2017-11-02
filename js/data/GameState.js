@@ -23,8 +23,6 @@ export default class GameState {
   }
 
   /**
-   * Количество ошибок игрока
-   *
    * @return {number} Количество ошибок игрока
    */
   get faults() {
@@ -32,8 +30,6 @@ export default class GameState {
   }
 
   /**
-   * Текущее время игры
-   *
    * @return {number} Время игры
    */
   get time() {

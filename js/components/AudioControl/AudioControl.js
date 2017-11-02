@@ -6,11 +6,20 @@ import AudioControlView from './AudioControlView';
 export default class AudioControl {
   /**
    * @param {string} src Url аудиозаписи
+   * @param {boolean} isAutoplay Нужно ли автоматически начинать воспроизведение
    */
-  constructor(src) {
-    this._view = new AudioControlView(src);
+  constructor({src, isAutoplay}) {
+    this._view = new AudioControlView(src, isAutoplay);
 
+    this._view.onPlayClicked = this._onPlayClicked.bind(this);
     this.renderView = this.renderView.bind(this);
+  }
+
+  /**
+   * @return {boolean} Признак того, играет ли в данный момент песня
+   */
+  get isPlaying() {
+    return this._view.isPlaying;
   }
 
   /**
@@ -21,4 +30,32 @@ export default class AudioControl {
   renderView() {
     return this._view.element;
   }
+
+  /**
+   * Начать воспроизведение песни
+   */
+  play() {
+    this._view.play();
+  }
+
+  /**
+   * Поставить воспроизведение песни на паузу
+   */
+  pause() {
+    this._view.pause();
+  }
+
+  /**
+   * Обработчик нажатия на кнопку воспроизведения песни
+   * @private
+   */
+  _onPlayClicked() {
+    // если родитель не назначил обработчик onPlayClicked, то обрабатываем дефолтное поведение
+    if (this.onPlayClicked) {
+      this.onPlayClicked();
+    } else {
+      this._view.togglePlay();
+    }
+  }
+
 }

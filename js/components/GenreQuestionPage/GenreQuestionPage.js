@@ -28,8 +28,17 @@ class GenreQuestionPage {
     this._isFastAnswer = true;
 
     const gameStatus = new GameStatus(gameState);
-    const renderAudioControlViewList = this._gameState.currentQuestion.answers.map(({src}) =>
-      (new AudioControl(src)).renderView);
+    let renderAudioControlViewsList = [];
+    this._audioControlsList = [];
+    this._gameState.currentQuestion.answers.forEach(({src}) => {
+      const audioControl = new AudioControl({src, isAutoplay: false});
+      this._audioControlsList.push(audioControl);
+      renderAudioControlViewsList.push(audioControl.renderView);
+
+      audioControl.onPlayClicked = () => {
+        this._audioControlClicked(audioControl);
+      };
+    });
 
     gameStatus.init({
       faults: this._gameState.faults,
@@ -37,7 +46,7 @@ class GenreQuestionPage {
     });
     this._view.init(this._gameState.currentQuestion, {
       renderGameStatusView: gameStatus.renderView,
-      renderAudioControlViewList});
+      renderAudioControlViewsList});
 
     renderPage(this._view.element);
 
@@ -94,6 +103,27 @@ class GenreQuestionPage {
     }
 
     this._showNextPage();
+  }
+
+  /**
+   * Обработчик нажатия кнопки воспроизведения песни
+   *
+   * @param {AudioControl} currentAudioControl Аудио контрол на котором произошло событие
+   * @private
+   */
+  _audioControlClicked(currentAudioControl) {
+    if (!currentAudioControl.isPlaying) {
+      // нужно остановить воспроизведение предыдущей песни
+      this._audioControlsList.forEach((audioControl) => {
+        if (audioControl.isPlaying) {
+          audioControl.pause();
+        }
+      });
+
+      currentAudioControl.play();
+    } else {
+      currentAudioControl.pause();
+    }
   }
 }
 

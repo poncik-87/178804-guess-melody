@@ -28,7 +28,9 @@ class ArtistQuestionPage {
     this._isFastAnswer = true;
 
     const gameStatus = new GameStatus(gameState);
-    const audioControl = new AudioControl(gameState.currentQuestion.src);
+    const audioControl = new AudioControl({
+      src: gameState.currentQuestion.src,
+      isAutoplay: true});
 
     gameStatus.init({
       faults: this._gameState.faults,
