@@ -15,7 +15,7 @@ export default class ResultWinPageView extends AbstractView {
          <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
 
          <h2 class="title">Вы настоящий меломан!</h2>
-         <div class="main-stat">За&nbsp;${minutes}&nbsp;минуты и ${seconds}&nbsp;секунд
+         <div class="main-stat">За&nbsp;${minutes}&nbsp;${ResultWinPageView._minutesDeclension(minutes)} и ${seconds}&nbsp;${ResultWinPageView._secondsDeclension(seconds)}
            <br>вы&nbsp;набрали ${this._totalScore} баллов (${this._fastAnswersScore} быстрых)
            <br>совершив ${this._faults} ошибки</div>
          <span class="main-comparison">${this._resultMessage}</span>
@@ -51,6 +51,45 @@ export default class ResultWinPageView extends AbstractView {
     restartButton.addEventListener(`click`, () => {
       this.onRestartClick();
     });
+  }
+
+  /**
+   * Функция возвращает склонение слова "минута" в родительном падеже в зависимости от числительного
+   *
+   * @param {number} minutes Количество минут
+   * @return {string} Строка склоненного слова
+   * @private
+   */
+  static _minutesDeclension(minutes) {
+    let word;
+    if (minutes === 1) {
+      word = `минуту`;
+    } else if (minutes < 5) {
+      word = `минуты`;
+    } else {
+      word = `минут`;
+    }
+    return word;
+  }
+
+  /**
+   * Функция возвращает склонение слова "секунда" в родительном падеже в зависимости от числительного
+   *
+   * @param {number} seconds Количество секунд
+   * @return {string} Строка склоненного слова
+   * @private
+   */
+  static _secondsDeclension(seconds) {
+    const lastFigure = seconds % 10;
+    let word;
+    if (lastFigure === 1) {
+      word = `секунду`;
+    } else if (lastFigure < 5) {
+      word = `секунды`;
+    } else {
+      word = `секунд`;
+    }
+    return word;
   }
 
   /**
