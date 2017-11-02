@@ -1,6 +1,11 @@
 import GameStatusView from './GameStatusView';
 
 /**
+ * Время, после которого включается режим предупреждения об окончании времени
+ */
+const WARNING_TIME = 30;
+
+/**
  * Блок статуса игры
  */
 export default class GameStatus {
@@ -23,7 +28,7 @@ export default class GameStatus {
    * @param {number} time Время игры
    */
   init({faults, time}) {
-    this._view.init({faults, time});
+    this._view.init({faults, time, isWarninMode: this._isWarningMode(time)});
   }
 
   /**
@@ -36,12 +41,23 @@ export default class GameStatus {
   }
 
   /**
+   * Функция возвращает признак режима предупреждения
+   *
+   * @param {number} time Оставшееся время
+   * @return {boolean} Признак режима предупреждения
+   * @private
+   */
+  _isWarningMode(time) {
+    return time < WARNING_TIME;
+  }
+
+  /**
    * Колбэк обработки изменения оставшегося времени игры
    *
    * @param {number} time Оставшееся время игры
    */
   onTimeChanged(time) {
-    this._view.updateTime(time);
+    this._view.updateTime(time, this._isWarningMode(time));
   }
 
   /**
