@@ -1,4 +1,4 @@
-import {QuestionType} from './consts';
+import {QuestionType, MAX_FAULTS_COUNT} from './consts';
 
 import ArtistQuestionPage from './components/ArtistQuestionPage/ArtistQuestionPage';
 import GenreQuestionPage from './components/GenreQuestionPage/GenreQuestionPage';
@@ -58,7 +58,7 @@ class App {
   showNextPage(gameState) {
     if (gameState.time <= 0) {
       App.showResultTimeoutPage();
-    } else if (gameState.lives <= 0) {
+    } else if (gameState.faults >= MAX_FAULTS_COUNT) {
       App.showResultLoosePage();
     } else if (gameState.hasNextQuestion) {
       gameState = gameState.iterateQuestion();
@@ -100,7 +100,7 @@ class App {
 
         Loader.load(SERVER_STATS_URL).then((statsData) => {
           ResultWinPage.init({
-            lives: paramsObject.lives,
+            faults: paramsObject.faults,
             time: paramsObject.time,
             totalScore: paramsObject.totalScore,
             fastAnswersScore: paramsObject.fastAnswersScore,
@@ -151,12 +151,12 @@ class App {
    */
   static showResultWinPage(gameState) {
     const statsData = {
-      lives: gameState.lives,
+      faults: gameState.faults,
       time: gameState.time,
       score: gameState.userScore.totalScore
     };
     const resultData = {
-      lives: gameState.lives,
+      faults: gameState.faults,
       time: gameState.time,
       totalScore: gameState.userScore.totalScore,
       fastAnswersScore: gameState.userScore.fastAnswersScore

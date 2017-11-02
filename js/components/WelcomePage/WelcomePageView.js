@@ -1,3 +1,5 @@
+import {MAX_FAULTS_COUNT} from '../../consts';
+
 import AbstractView from '../../AbstractView';
 
 /**
@@ -15,7 +17,7 @@ export default class WelcomePageView extends AbstractView {
          <h2 class="title main-title">Правила игры</h2>
          <p class="text main-text">
            Правила просты&nbsp;— за&nbsp;5 минут ответить на все вопросы.<br>
-           Ошибиться можно 3 раза.<br>
+           Ошибиться можно ${MAX_FAULTS_COUNT} раза.<br>
            Удачи!
          </p>
       </section>`

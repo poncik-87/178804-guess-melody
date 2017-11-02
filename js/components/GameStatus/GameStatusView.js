@@ -25,15 +25,15 @@ const timerTemplate = ({minutes, seconds}) =>
    </svg>`;
 
 /**
- * Функция возвращает шаблон блока жизней игрока
+ * Функция возвращает шаблон блока ошибок игрока
  *
- * @param {number} lives Количество жизней игрока
+ * @param {number} faults Количество ошибок игрока
  *
- * @return {string} Шаблон блока жизней игрока
+ * @return {string} Шаблон блока ошибок игрока
  */
-const livesTemplate = (lives) =>
+const faultsTemplate = (faults) =>
   `<div class="main-mistakes">
-     ${new Array(lives)
+     ${new Array(faults)
       .fill(`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`)
       .join(``)}
    </div>`;
@@ -49,7 +49,7 @@ export default class GameStatusView extends AbstractView {
     return (
       `<div>
          ${timerTemplate(timeConverter.numberToTime(this._time))}
-         ${livesTemplate(this._lives)}
+         ${faultsTemplate(this._faults)}
        </div>`
     );
   }
@@ -57,11 +57,11 @@ export default class GameStatusView extends AbstractView {
   /**
    * Функция инициализации вью
    *
-   * @param {number} lives Количество жизней игрока
+   * @param {number} faults Количество ошибок игрока
    * @param {number} time Время игры
    */
-  init({lives, time}) {
-    this._lives = lives;
+  init({faults, time}) {
+    this._faults = faults;
     this._time = time;
   }
 
@@ -77,12 +77,12 @@ export default class GameStatusView extends AbstractView {
   }
 
   /**
-   * Функция обновляет количество жизней игрока
+   * Функция обновляет количество ошибок игрока
    *
-   * @param {number} lives Количество жизней игрока
+   * @param {number} faults Количество ошибок игрока
    */
-  updateLives(lives) {
-    this._lives = lives;
+  updateFaults(faults) {
+    this._faults = faults;
 
     super.update();
   }

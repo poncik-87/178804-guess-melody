@@ -1,5 +1,4 @@
 import AbstractView from '../../AbstractView';
-import getMistakesCount from '../../utils/getMistakesCount';
 import timeConverter from '../../utils/timeConverter';
 
 /**
@@ -18,7 +17,7 @@ export default class ResultWinPageView extends AbstractView {
          <h2 class="title">Вы настоящий меломан!</h2>
          <div class="main-stat">За&nbsp;${minutes}&nbsp;минуты и ${seconds}&nbsp;секунд
            <br>вы&nbsp;набрали ${this._totalScore} баллов (${this._fastAnswersScore} быстрых)
-           <br>совершив ${getMistakesCount(this._lives)} ошибки</div>
+           <br>совершив ${this._faults} ошибки</div>
          <span class="main-comparison">${this._resultMessage}</span>
          <span role="button" tabindex="0" class="main-replay">Сыграть ещё раз</span>
        </section>`
@@ -28,14 +27,14 @@ export default class ResultWinPageView extends AbstractView {
   /**
    * Функция инициализации вью
    *
-   * @param {number} lives Количество жизней игрока
+   * @param {number} faults Количество ошибок игрока
    * @param {number} time Оставшееся время игры
    * @param {number} totalScore Общий счет игрока
    * @param {number} fastAnswersScore Счет быстрых ответов
    * @param {string} resultMessage Сообщение результата игры
    */
-  init({lives, time, totalScore, fastAnswersScore, resultMessage}) {
-    this._lives = lives;
+  init({faults, time, totalScore, fastAnswersScore, resultMessage}) {
+    this._faults = faults;
     this._time = time;
     this._totalScore = totalScore;
     this._fastAnswersScore = fastAnswersScore;

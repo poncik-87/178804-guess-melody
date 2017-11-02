@@ -1,16 +1,16 @@
 import assert from 'assert';
 import getGameResultMessage from './getGameResultMessage';
-import {GameResult} from '../consts';
+import {GameResult, MAX_FAULTS_COUNT} from '../consts';
 
 /**
  * Возвращает результаты игры в виде объекта
  *
  * @param {number} score Счет
- * @param {number} lives Количество оставшихся жизней
+ * @param {number} faults Количество ошибок игрока
  * @param {number} time Оставшееся время
  * @return {Object} Результаты игры в виде объекта
  */
-const getUserResultObject = (score, lives, time) => ({score, lives, time});
+const getUserResultObject = (score, faults, time) => ({score, faults, time});
 
 describe(`getGameResultMessage`, () => {
   let currentUserResult;
@@ -21,9 +21,9 @@ describe(`getGameResultMessage`, () => {
       assert.equal(GameResult.TIME_LOST, getGameResultMessage(currentUserResult));
     });
 
-    it(`should return "lives lost" game result`, () => {
-      currentUserResult = getUserResultObject(1, 0, 10);
-      assert.equal(GameResult.LIVES_LOST, getGameResultMessage(currentUserResult));
+    it(`should return "faults lost" game result`, () => {
+      currentUserResult = getUserResultObject(1, MAX_FAULTS_COUNT, 10);
+      assert.equal(GameResult.FAULTS_LOST, getGameResultMessage(currentUserResult));
     });
   });
 
@@ -40,7 +40,7 @@ describe(`getGameResultMessage`, () => {
       otherUsersResults = [
         getUserResultObject(-11, 1, 10),
         getUserResultObject(10, 2, 10),
-        getUserResultObject(15, 3, 100)
+        getUserResultObject(15, 1, 100)
       ];
       currentUserResult = getUserResultObject(20, 1, 10);
       assert.equal(GameResult.win(1, 4, 100), getGameResultMessage(currentUserResult, otherUsersResults));
@@ -50,7 +50,7 @@ describe(`getGameResultMessage`, () => {
       otherUsersResults = [
         getUserResultObject(2, 1, 10),
         getUserResultObject(10, 2, 10),
-        getUserResultObject(15, 3, 100)
+        getUserResultObject(15, 1, 100)
       ];
       currentUserResult = getUserResultObject(1, 1, 10);
       assert.equal(GameResult.win(4, 4, 0), getGameResultMessage(currentUserResult, otherUsersResults));
@@ -60,7 +60,7 @@ describe(`getGameResultMessage`, () => {
       otherUsersResults = [
         getUserResultObject(2, 1, 10),
         getUserResultObject(10, 2, 10),
-        getUserResultObject(15, 3, 100)
+        getUserResultObject(15, 1, 100)
       ];
       currentUserResult = getUserResultObject(-1, 1, 10);
       assert.equal(GameResult.win(4, 4, 0), getGameResultMessage(currentUserResult, otherUsersResults));

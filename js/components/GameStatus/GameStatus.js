@@ -11,7 +11,7 @@ export default class GameStatus {
     this._view = new GameStatusView();
 
     gameState.subscribeOnTimeChanged(this.onTimeChanged.bind(this));
-    gameState.subscribeOnLivesChanged(this.onLivesChanged.bind(this));
+    gameState.subscribeOnFaultsChanged(this.onFaultsChanged.bind(this));
 
     this.renderView = this.renderView.bind(this);
   }
@@ -19,11 +19,11 @@ export default class GameStatus {
   /**
    * Функция инициализации блока статуса игры
    *
-   * @param {number} lives Количество жизней игрока
+   * @param {number} faults Количество ошибок игрока
    * @param {number} time Время игры
    */
-  init({lives, time}) {
-    this._view.init({lives, time});
+  init({faults, time}) {
+    this._view.init({faults, time});
   }
 
   /**
@@ -45,11 +45,11 @@ export default class GameStatus {
   }
 
   /**
-   * Колбэк обработки изменения количества жизней игрока
+   * Колбэк обработки изменения количества ошибок игрока
    *
-   * @param {number} lives Количество жизней игрока
+   * @param {number} faults Количество ошибок игрока
    */
-  onLivesChanged(lives) {
-    this._view.updateLives(lives);
+  onFaultsChanged(faults) {
+    this._view.updateFaults(faults);
   }
 }

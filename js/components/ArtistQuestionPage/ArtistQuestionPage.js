@@ -18,7 +18,7 @@ class ArtistQuestionPage {
    * Функция инициализации страницы
    *
    * @param {GameState} gameState Состояния игры
-   * @param {number} gameState.lives Количество жизней игрока
+   * @param {number} gameState.faults Количество ошибок игрока
    * @param {number} gameState.time Оставшееся время игры
    * @param {Object} gameState.currentQuestion Текущий вопрос игры
    * @param {Array<Object>} gameState.currentQuestion.answers Ответы на текущий вопрос
@@ -30,7 +30,7 @@ class ArtistQuestionPage {
     const audioControl = new AudioControl(gameState.currentQuestion.src);
 
     gameStatus.init({
-      lives: this._gameState.lives,
+      faults: this._gameState.faults,
       time: this._gameState.time
     });
     this._view.init(this._gameState.currentQuestion, {
@@ -69,7 +69,7 @@ class ArtistQuestionPage {
     if (answer && answer.isCorrect) {
       this._gameState = this._gameState.setQuestionAnswer(Answer.CORRECT);
     } else {
-      this._gameState = this._gameState.setQuestionAnswer(Answer.INCORRECT).dropLive();
+      this._gameState = this._gameState.setQuestionAnswer(Answer.INCORRECT).increaseFault();
     }
 
     clearInterval(this._timerId);
