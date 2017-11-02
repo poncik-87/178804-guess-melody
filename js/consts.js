@@ -32,4 +32,14 @@ const QuestionType = {
  */
 const MAX_FAULTS_COUNT = 3;
 
-export {Answer, GameResult, QuestionType, MAX_FAULTS_COUNT};
+/**
+ * Время обновления таймера игры
+ */
+const TICK_TIME = 1000;
+
+/**
+ * Время для быстрого ответа
+ */
+const FAST_ANSWER_TIMEOUT = 30000;
+
+export {Answer, GameResult, QuestionType, MAX_FAULTS_COUNT, TICK_TIME, FAST_ANSWER_TIMEOUT};

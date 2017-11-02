@@ -19,7 +19,7 @@ class ResultTimeoutPage {
     renderPage(this._view.element);
 
     this._view.onRestartClick = () => {
-      App.showWelcomePage();
+      App.startGame();
     };
   }
 }

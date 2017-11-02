@@ -1,4 +1,4 @@
-import {Answer} from '../../consts';
+import {Answer, TICK_TIME, FAST_ANSWER_TIMEOUT} from '../../consts';
 
 import App from '../../App';
 import GameStatus from '../GameStatus/GameStatus';
@@ -25,6 +25,7 @@ class GenreQuestionPage {
    */
   init(gameState) {
     this._gameState = gameState;
+    this._isFastAnswer = true;
 
     const gameStatus = new GameStatus(gameState);
     const renderAudioControlViewList = this._gameState.currentQuestion.answers.map(({src}) =>
@@ -40,8 +41,20 @@ class GenreQuestionPage {
 
     renderPage(this._view.element);
 
-    this._timerId = setInterval(this._onTimerTick.bind(this), 1000);
+    this._timerId = setInterval(this._onTimerTick.bind(this), TICK_TIME);
+    this._fastAnswerTimer = setTimeout(this._onFastAnswerTimerTimeout.bind(this), FAST_ANSWER_TIMEOUT);
     this._view.onAnswerClick = this._onAnswerClick.bind(this);
+  }
+
+  /**
+   * Показать следующую страницу
+   *
+   * @private
+   */
+  _showNextPage() {
+    clearInterval(this._timerId);
+    clearTimeout(this._fastAnswerTimer);
+    App.showNextPage(this._gameState);
   }
 
   /**
@@ -53,9 +66,16 @@ class GenreQuestionPage {
     this._gameState = this._gameState.tickTime();
 
     if (this._gameState.time <= 0) {
-      clearInterval(this._timerId);
-      App.showNextPage(this._gameState);
+      this._showNextPage();
     }
+  }
+
+  /**
+   * Обработчик таймера быстрого ответа
+   * @private
+   */
+  _onFastAnswerTimerTimeout() {
+    this._isFastAnswer = false;
   }
 
   /**
@@ -68,13 +88,12 @@ class GenreQuestionPage {
     const isCorrectAnswer = !checkedAnswerGenres.some((genre) => genre !== this._gameState.currentQuestion.genre);
 
     if (isCorrectAnswer) {
-      this._gameState = this._gameState.setQuestionAnswer(Answer.CORRECT);
+      this._gameState = this._gameState.setQuestionAnswer(this._isFastAnswer ? Answer.FAST_CORRECT : Answer.CORRECT);
     } else {
       this._gameState = this._gameState.setQuestionAnswer(Answer.INCORRECT).increaseFault();
     }
 
-    clearInterval(this._timerId);
-    App.showNextPage(this._gameState);
+    this._showNextPage();
   }
 }
 
