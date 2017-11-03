@@ -1,6 +1,6 @@
 import {Answer, TICK_TIME, FAST_ANSWER_TIMEOUT} from '../../consts';
 
-import App from '../../App';
+import app from '../../app';
 import AudioControl from '../AudioControl/AudioControl';
 import GameStatus from '../GameStatus/GameStatus';
 import ArtistQuestionPageView from './ArtistQuestionPageView';
@@ -56,7 +56,7 @@ class ArtistQuestionPage {
   _showNextPage() {
     clearInterval(this._timerId);
     clearTimeout(this._fastAnswerTimer);
-    App.showNextPage(this._gameState);
+    app.showNextPage(this._gameState);
   }
 
   /**

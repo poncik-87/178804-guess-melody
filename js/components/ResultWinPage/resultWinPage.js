@@ -1,6 +1,6 @@
 import renderPage from '../../utils/renderPage';
 import ResultWinPageView from './ResultWinPageView';
-import App from '../../App';
+import app from '../../app';
 import getGameResultMessage from '../../utils/getGameResultMessage';
 
 /**
@@ -31,7 +31,7 @@ class ResultWinPage {
     renderPage(this._view.element);
 
     this._view.onRestartClick = () => {
-      App.startGame();
+      app.startGame();
     };
   }
 }

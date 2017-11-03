@@ -1,13 +1,13 @@
 import {QuestionType, MAX_FAULTS_COUNT} from './consts';
 
-import ArtistQuestionPage from './components/ArtistQuestionPage/ArtistQuestionPage';
-import GenreQuestionPage from './components/GenreQuestionPage/GenreQuestionPage';
-import ResultLoosePage from './components/ResultLoosePage/ResultLoosePage';
-import ResultTimeoutPage from './components/ResultTimeoutPage/ResultTimeoutPage';
-import ResultWinPage from './components/ResultWinPage/ResultWinPage';
-import WelcomePage from './components/WelcomePage/WelcomePage';
+import artistQuestionPage from './components/ArtistQuestionPage/artistQuestionPage';
+import genreQuestionPage from './components/GenreQuestionPage/genreQuestionPage';
+import resultLoosePage from './components/ResultLoosePage/resultLoosePage';
+import resultTimeoutPage from './components/ResultTimeoutPage/resultTimeoutPage';
+import resultWinPage from './components/ResultWinPage/resultWinPage';
+import welcomePage from './components/WelcomePage/welcomePage';
 import GameState from './data/GameState';
-import Loader from './Loader';
+import loader from './loader';
 import adaptServerData from './utils/adaptServerData';
 import preloadAudio from './utils/preloadAudio';
 
@@ -29,7 +29,7 @@ class App {
   constructor() {
     window.onhashchange = this.onHashChanged.bind(this);
 
-    Loader.load(SERVER_GAME_DATA_URL).
+    loader.load(SERVER_GAME_DATA_URL).
         then(adaptServerData).
         then((data) => {
           this._gameState = GameState.generate(data);
@@ -86,16 +86,16 @@ class App {
     const paramsObject = params && JSON.parse(params);
     switch (pageId) {
       case PageId.WELCOME:
-        WelcomePage.init();
+        welcomePage.init();
         break;
       case PageId.GAME:
         this.showNextPage(this._gameState);
         break;
       case PageId.RESULT_LOOSE:
-        ResultLoosePage.init();
+        resultLoosePage.init();
         break;
       case PageId.RESULT_TIMEOUT:
-        ResultTimeoutPage.init();
+        resultTimeoutPage.init();
         break;
       case PageId.RESULT_WIN:
         if (!paramsObject) {
@@ -103,8 +103,8 @@ class App {
           return;
         }
 
-        Loader.load(SERVER_STATS_URL).then((statsData) => {
-          ResultWinPage.init({
+        loader.load(SERVER_STATS_URL).then((statsData) => {
+          resultWinPage.init({
             faults: paramsObject.faults,
             time: paramsObject.time,
             totalScore: paramsObject.totalScore,
@@ -123,7 +123,7 @@ class App {
    * @param {Object} gameState Состояние игры
    */
   static showArtistQuestionPage(gameState) {
-    ArtistQuestionPage.init(gameState);
+    artistQuestionPage.init(gameState);
   }
 
   /**
@@ -132,7 +132,7 @@ class App {
    * @param {Object} gameState Состояние игры
    */
   static showGenreQuestionPage(gameState) {
-    GenreQuestionPage.init(gameState);
+    genreQuestionPage.init(gameState);
   }
 
   /**
@@ -167,7 +167,7 @@ class App {
       fastAnswersScore: gameState.userScore.fastAnswersScore
     };
 
-    Loader.save(statsData, SERVER_STATS_URL).then(() => {
+    loader.save(statsData, SERVER_STATS_URL).then(() => {
       const paramsString = JSON.stringify(resultData);
       window.location.hash = `${PageId.RESULT_WIN}?${paramsString}`;
     });
