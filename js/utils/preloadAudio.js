@@ -13,9 +13,8 @@ export default function preloadAudio(srcList) {
           `<audio src="${src}"></audio>`
       );
 
-      audioNode.oncanplaythrough = () => {
-        resolve();
-      };
+      audioNode.addEventListener(`canplaythrough`, resolve, false);
+      audioNode.addEventListener(`suspend`, resolve, false);
     }));
 
   return Promise.all(loadPromises);
