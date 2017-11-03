@@ -10,7 +10,6 @@ import loadingPage from './components/LoadingPage/loadingPage';
 import GameState from './data/GameState';
 import loader from './loader';
 import adaptServerData from './utils/adaptServerData';
-import preloadAudio from './utils/preloadAudio';
 
 const PageId = {
   WELCOME: `welcome`,
@@ -37,7 +36,6 @@ class App {
           this._gameState = GameState.generate(data);
           return this._gameState.audioSrcList;
         }).
-        then((srcList) => preloadAudio(srcList)).
         then(() => {
           this.onHashChanged();
         });
