@@ -27,8 +27,12 @@ class ArtistQuestionPage {
     this._gameState = gameState;
     this._isFastAnswer = true;
 
+    if (this._audioControl) {
+      this._audioControl.remove();
+    }
+
     const gameStatus = new GameStatus(gameState);
-    const audioControl = new AudioControl({
+    this._audioControl = new AudioControl({
       src: gameState.currentQuestion.src,
       isAutoplay: true});
 
@@ -38,7 +42,7 @@ class ArtistQuestionPage {
     });
     this._view.init(this._gameState.currentQuestion, {
       renderGameStatusView: gameStatus.renderView,
-      renderAudioControlView: audioControl.renderView
+      renderAudioControlView: this._audioControl.renderView
     });
 
     renderPage(this._view.element);

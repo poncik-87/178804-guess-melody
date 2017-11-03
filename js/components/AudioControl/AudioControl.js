@@ -32,6 +32,13 @@ export default class AudioControl {
   }
 
   /**
+   * Удаление компонента из dom
+   */
+  remove() {
+    this._view.element.parentNode.removeChild(this._view.element);
+  }
+
+  /**
    * Начать воспроизведение песни
    */
   play() {

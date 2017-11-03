@@ -27,6 +27,12 @@ class GenreQuestionPage {
     this._gameState = gameState;
     this._isFastAnswer = true;
 
+    if (this._audioControlsList) {
+      this._audioControlsList.forEach((audioControl) => {
+        audioControl.remove();
+      });
+    }
+
     const gameStatus = new GameStatus(gameState);
     let renderAudioControlViewsList = [];
     this._audioControlsList = [];
