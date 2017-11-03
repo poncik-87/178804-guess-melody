@@ -1,63 +1,6 @@
 import AbstractView from '../../AbstractView';
 
 /**
- * Функция возвращает шаблон блока вопроса
- *
- * @param {string} question Текст вопроса
- *
- * @return {string} шаблон блока вопроса
- */
-const taskTemplate = (question) =>
-  `<h2 class="title main-title">${question}</h2>`;
-
-/**
- * Функция возвращает шаблон блока ответа
- *
- * @param {Object} answer Данные варианта ответа
- * @param {string} answer.id Идентификатор ответа
- * @param {string} answer.title Имя исполнителя
- * @param {string} answer.image Изображение исполнителя
- *
- * @return {string} шаблон блока ответа
- */
-const answerTemplate = (answer) =>
-  `<div class="main-answer-wrapper" data-answer-id=${answer.id}>
-     <input class="main-answer-r" type="radio" id="answer-${answer.title}" name="answer" value="val-${answer.title}"/>
-     <label class="main-answer" for="answer-${answer.title}">
-       <img class="main-answer-preview" src="${answer.image.url}"
-            alt="${answer.title}" width="134" height="134">
-       ${answer.title}
-     </label>
-   </div>`;
-
-/**
- * Функция возвращает шаблон блока ответов
- *
- * @param {Object} answers Объект с вариантами ответов
- *
- * @return {string} шаблон блока ответов
- */
-const answersFormTemplate = (answers) =>
-  `<form class="main-list">
-     ${answers.map(answerTemplate).join(``)}
-   </form>`;
-
-/**
- * Функция возвращает шаблон блока контента
- *
- * @param {Object} questionData Объект данных вопроса
- * @param {string} questionData.question Текст вопроса
- * @param {Object} questionData.answers Объект с вариантами ответов
- *
- * @return {string} шаблон блока контента
- */
-const contentTemplate = (questionData) =>
-  `<div class="main-wrap">
-     ${taskTemplate(questionData.question)}
-     ${answersFormTemplate(questionData.answers)}
-   </div>`;
-
-/**
  * Класс вью для игрового экрана выбора артиста
  */
 export default class ArtistQuestionPageView extends AbstractView {
@@ -67,7 +10,7 @@ export default class ArtistQuestionPageView extends AbstractView {
   get template() {
     return (
       `<section class="main main--level main--level-artist">
-         ${contentTemplate(this._questionData)}
+         ${this._contentTemplate()}
        </section>`
     );
   }
@@ -110,8 +53,69 @@ export default class ArtistQuestionPageView extends AbstractView {
   }
 
   /**
+   * Функция возвращает шаблон блока вопроса
+   *
+   * @return {string} шаблон блока вопроса
+   */
+  _taskTemplate() {
+    return (
+      `<h2 class="title main-title">${this._questionData.question}</h2>`
+    );
+  }
+
+  /**
+   * Функция возвращает шаблон блока ответов
+   *
+   * @return {string} шаблон блока ответов
+   */
+  _answersFormTemplate() {
+    return (
+      `<form class="main-list">
+         ${this._questionData.answers.map(ArtistQuestionPageView._answerTemplate).join(``)}
+       </form>`
+    );
+  }
+
+  /**
+   * Функция возвращает шаблон блока контента
+   *
+   * @return {string} шаблон блока контента
+   */
+  _contentTemplate() {
+    return (
+      `<div class="main-wrap">
+         ${this._taskTemplate()}
+         ${this._answersFormTemplate()}
+       </div>`
+    );
+  }
+
+  /**
    * Колбэк обработки нажатия на вариант ответа
    */
   onAnswerClick() {
+  }
+
+  /**
+   * Функция возвращает шаблон блока ответа
+   *
+   * @param {Object} answer Данные варианта ответа
+   * @param {string} answer.id Идентификатор ответа
+   * @param {string} answer.title Имя исполнителя
+   * @param {string} answer.image Изображение исполнителя
+   *
+   * @return {string} шаблон блока ответа
+   */
+  static _answerTemplate(answer) {
+    return (
+      `<div class="main-answer-wrapper" data-answer-id=${answer.id}>
+         <input class="main-answer-r" type="radio" id="answer-${answer.title}" name="answer" value="val-${answer.title}"/>
+         <label class="main-answer" for="answer-${answer.title}">
+           <img class="main-answer-preview" src="${answer.image.url}"
+                alt="${answer.title}" width="134" height="134">
+           ${answer.title}
+         </label>
+       </div>`
+    );
   }
 }

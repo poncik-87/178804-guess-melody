@@ -100,9 +100,9 @@ export default class GameState {
           srcList.push(dataItem.src);
         }
       } else if (dataItem.type === QuestionType.GENRE) {
-        dataItem.answers.forEach(({src}) => {
-          if (srcList.indexOf(src) === -1) {
-            srcList.push(src);
+        dataItem.answers.forEach((answer) => {
+          if (srcList.indexOf(answer.src) === -1) {
+            srcList.push(answer.src);
           }
         });
       }
