@@ -13,7 +13,7 @@ const Answer = {
 const GameResult = {
   TIME_LOST: `Время вышло!
   Вы не успели отгадать все мелодии`,
-  LIVES_LOST: `У вас закончились все попытки.
+  FAULTS_LOST: `У вас закончились все попытки.
   Ничего, повезёт в следующий раз!`,
   win: (place, gamersCount, rating) =>
     `Вы заняли ${place}-ое место из ${gamersCount} игроков. Это лучше чем у ${rating}% игроков`
@@ -27,4 +27,19 @@ const QuestionType = {
   GENRE: `genre`
 };
 
-export {Answer, GameResult, QuestionType};
+/**
+ * Максимальное количество ошибок игрока
+ */
+const MAX_FAULTS_COUNT = 3;
+
+/**
+ * Время обновления таймера игры
+ */
+const TICK_TIME = 1000;
+
+/**
+ * Время для быстрого ответа
+ */
+const FAST_ANSWER_TIMEOUT = 30000;
+
+export {Answer, GameResult, QuestionType, MAX_FAULTS_COUNT, TICK_TIME, FAST_ANSWER_TIMEOUT};

@@ -1,6 +1,6 @@
 import renderPage from '../../utils/renderPage';
 import ResultWinPageView from './ResultWinPageView';
-import App from '../../App';
+import app from '../../app';
 import getGameResultMessage from '../../utils/getGameResultMessage';
 
 /**
@@ -14,24 +14,24 @@ class ResultWinPage {
   /**
    * Функция инициализации страницы
    *
-   * @param {number} lives Количество жизней игрока
+   * @param {number} faults Количество ошибок игрока
    * @param {number} time Оставшееся время игры
    * @param {number} totalScore Общий счет игрока
    * @param {number} fastAnswersScore Счет быстрых ответов
    * @param {Array<Object>} statsData Статистика прохождения игры
    */
-  init({lives, time, totalScore, fastAnswersScore, statsData}) {
+  init({faults, time, totalScore, fastAnswersScore, statsData}) {
     const resultMessage = getGameResultMessage({
       score: totalScore,
-      lives,
+      faults,
       time
     }, statsData);
 
-    this._view.init({lives, time, totalScore, fastAnswersScore, resultMessage});
+    this._view.init({faults, time, totalScore, fastAnswersScore, resultMessage});
     renderPage(this._view.element);
 
     this._view.onRestartClick = () => {
-      App.showWelcomePage();
+      app.startGame();
     };
   }
 }

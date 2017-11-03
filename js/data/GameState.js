@@ -1,9 +1,9 @@
-import {Answer} from "../consts";
+import {Answer, QuestionType, MAX_FAULTS_COUNT} from "../consts";
 
 import timeConverter from '../utils/timeConverter';
 
 const initState = {
-  lives: 3,
+  faults: 0,
   time: timeConverter.timeToNumber({
     minutes: 5,
     seconds: 0
@@ -14,60 +14,22 @@ const initState = {
 
 /**
  * Класс состояния игры
- * Содержит жизни игрока, время игры, и данные вопросов текущей игры
+ * Содержит количество ошибок игрока, время игры, и данные вопросов текущей игры
  */
 export default class GameState {
   constructor() {
     this._onTimeChangedCallbackSet = new Set();
-    this._onLivesChangedCallbackSet = new Set();
+    this._onFaultsChangedCallbackSet = new Set();
   }
+
   /**
-   * Функция генерирует новое игровое состояние
-   *
-   * @param {Array<Object>} data Исходные данные игры
-   *
-   * @return {GameState} Новое состояние игры
+   * @return {number} Количество ошибок игрока
    */
-  static generate(data) {
-    let newGameState = new GameState();
-    newGameState._lives = initState.lives;
-    newGameState._time = initState.time;
-    newGameState._questions = data.map((dataItem) => Object.assign({}, dataItem));
-    newGameState._currentQuestionIdx = initState.currentQuestionIdx;
-    return newGameState;
+  get faults() {
+    return this._faults;
   }
 
   /**
-   * Функция копирует игровое состояние
-   *
-   * @param {GameState} oldGameState Старое игровое состояние
-   * @return {GameState} Новое состояние игры
-   * @private
-   */
-  static _copy(oldGameState) {
-    let newGameState = new GameState();
-    newGameState._lives = oldGameState._lives;
-    newGameState._time = oldGameState._time;
-    newGameState._questions = oldGameState._questions.slice();
-    newGameState._currentQuestionIdx = oldGameState._currentQuestionIdx;
-    newGameState._onTimeChangedCallbackSet = new Set(oldGameState._onTimeChangedCallbackSet);
-    newGameState._onLivesChangedCallbackSet = new Set(oldGameState._onLivesChangedCallbackSet);
-
-    return newGameState;
-  }
-
-  /**
-   * Количество жизней игрока
-   *
-   * @return {number} Количество жизней игрока
-   */
-  get lives() {
-    return this._lives;
-  }
-
-  /**
-   * Текущее время игры
-   *
    * @return {number} Время игры
    */
   get time() {
@@ -99,7 +61,7 @@ export default class GameState {
    * @return {Object} Счет игрока в виде объекта {totalScore, fastAnswersScore}
    */
   get userScore() {
-    if (this._lives <= 0) {
+    if (this._faults >= MAX_FAULTS_COUNT) {
       return null;
     }
 
@@ -128,17 +90,38 @@ export default class GameState {
   }
 
   /**
-   * Функция уменьшает количество жизней игрока на 1
+   * Возвращает список url адресов песен
+   */
+  get audioSrcList() {
+    let srcList = [];
+    this._questions.forEach((dataItem) => {
+      if (dataItem.type === QuestionType.ARTIST) {
+        if (srcList.indexOf(dataItem.src) === -1) {
+          srcList.push(dataItem.src);
+        }
+      } else if (dataItem.type === QuestionType.GENRE) {
+        dataItem.answers.forEach((answer) => {
+          if (srcList.indexOf(answer.src) === -1) {
+            srcList.push(answer.src);
+          }
+        });
+      }
+    });
+    return srcList;
+  }
+
+  /**
+   * Функция увеличивает количество ошибок игрока на 1
    *
    * @return {GameState} Новое состояние игры
    */
-  dropLive() {
+  increaseFault() {
     let newGameState = GameState._copy(this);
-    newGameState._lives = newGameState._lives - 1;
+    newGameState._faults = newGameState._faults + 1;
 
     // оповещение подписчиков об изменении модели
-    for (let callback of this._onLivesChangedCallbackSet) {
-      callback(newGameState._lives);
+    for (let callback of this._onFaultsChangedCallbackSet) {
+      callback(newGameState._faults);
     }
 
     return newGameState;
@@ -195,11 +178,46 @@ export default class GameState {
   }
 
   /**
-   * Функция подписки на событие изменения количества жизней игрока
+   * Функция подписки на событие изменения количества ошибок игрока
    *
-   * @param {Function} callback Колбэк обрабатывающий изменение количества жизней игрока
+   * @param {Function} callback Колбэк обрабатывающий изменение количества ошибок игрока
    */
-  subscribeOnLivesChanged(callback) {
-    this._onLivesChangedCallbackSet.add(callback);
+  subscribeOnFaultsChanged(callback) {
+    this._onFaultsChangedCallbackSet.add(callback);
+  }
+
+  /**
+   * Функция генерирует новое игровое состояние
+   *
+   * @param {Array<Object>} data Исходные данные игры
+   *
+   * @return {GameState} Новое состояние игры
+   */
+  static generate(data) {
+    let newGameState = new GameState();
+    newGameState._faults = initState.faults;
+    newGameState._time = initState.time;
+    newGameState._questions = data.map((dataItem) => Object.assign({}, dataItem));
+    newGameState._currentQuestionIdx = initState.currentQuestionIdx;
+    return newGameState;
+  }
+
+  /**
+   * Функция копирует игровое состояние
+   *
+   * @param {GameState} oldGameState Старое игровое состояние
+   * @return {GameState} Новое состояние игры
+   * @private
+   */
+  static _copy(oldGameState) {
+    let newGameState = new GameState();
+    newGameState._faults = oldGameState._faults;
+    newGameState._time = oldGameState._time;
+    newGameState._questions = oldGameState._questions.slice();
+    newGameState._currentQuestionIdx = oldGameState._currentQuestionIdx;
+    newGameState._onTimeChangedCallbackSet = new Set(oldGameState._onTimeChangedCallbackSet);
+    newGameState._onFaultsChangedCallbackSet = new Set(oldGameState._onFaultsChangedCallbackSet);
+
+    return newGameState;
   }
 }

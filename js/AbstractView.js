@@ -10,6 +10,21 @@ export default class AbstractView {
   }
 
   /**
+   * Функция отложенно создает dom элемент и возвращает его
+   *
+   * @return {HTMLElement} Dom элемент
+   */
+  get element() {
+    if (!this._element) {
+      this._element = this.render();
+      this.insertChildren();
+      this.bind();
+    }
+
+    return this._element;
+  }
+
+  /**
    * Функция отрисовывает dom элемент для строки template
    *
    * @return {HTMLElement} Dom элемент
@@ -48,20 +63,5 @@ export default class AbstractView {
    * (может быть переопределена в наследниках, опционально)
    */
   bind() {
-  }
-
-  /**
-   * Функция отложенно создает dom элемент и возвращает его
-   *
-   * @return {HTMLElement} Dom элемент
-   */
-  get element() {
-    if (!this._element) {
-      this._element = this.render();
-      this.insertChildren();
-      this.bind();
-    }
-
-    return this._element;
   }
 }

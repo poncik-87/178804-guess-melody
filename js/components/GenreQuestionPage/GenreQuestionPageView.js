@@ -1,59 +1,6 @@
 import AbstractView from '../../AbstractView';
 
 /**
- * Функция возвращает блок текста вопроса
- *
- * @param {string} question Текст вопроса
- *
- * @return {string} шаблон блока вопроса
- */
-const taskTemplate = (question) =>
-  `<h2 class="title">${question}</h2>`;
-
-/**
- * Функция возвращает шаблон блока ответа
- *
- * @param {Object} answer Объект варианта ответа
- * @param {string} answer.id Идентификатор песни
- * @param {string} answer.genre Жанр песни
- *
- * @return {string} шаблон блока ответа
- */
-const answerTemplate = (answer) =>
-  `<div class="genre-answer">
-     <input type="checkbox" name="answer" value=${answer.genre} id=${answer.id}>
-     <label class="genre-answer-check" for=${answer.id}></label>
-   </div>`;
-
-/**
- * Функция возвращает шаблон блока ответов
- *
- * @param {Array<Object>} answers Объект с вариантами ответов
- *
- * @return {string} шаблон блока ответов
- */
-const answersFormTemplate = (answers) =>
-  `<form class="genre">
-     ${answers.map(answerTemplate)}     
-     <button class="genre-answer-send" type="submit" disabled>Ответить</button>
-   </form>`;
-
-/**
- * Функция возвращает шаблон блока контента
- *
- * @param {Object} questionData Объект данных вопроса
- * @param {string} questionData.question Текст вопроса
- * @param {Object} questionData.answers Объект с вариантами ответов
- *
- * @return {string} шаблон блока контента
- */
-const contentTemplate = (questionData) =>
-  `<div class="main-wrap">
-     ${taskTemplate(questionData.question)}
-     ${answersFormTemplate(questionData.answers)}
-   </div>`;
-
-/**
  * Вью страницы вопроса жанра песни
  */
 export default class GenreQuestionPageView extends AbstractView {
@@ -63,7 +10,7 @@ export default class GenreQuestionPageView extends AbstractView {
    * @param {Object} questionData Объект данных вопроса
    * @param {Object} childrenViews Дочерние отображения
    * @param {Function} childrenViews.renderGameStatusView Функция отрисовки статуса игры
-   * @param {Function[]} childrenViews.renderAudioControlViewList Массив функций отрисовки контрола аудио
+   * @param {Function[]} childrenViews.renderAudioControlViewsList Массив функций отрисовки контрола аудио
    */
   init(questionData, childrenViews) {
     this._questionData = questionData;
@@ -78,7 +25,7 @@ export default class GenreQuestionPageView extends AbstractView {
   get template() {
     return (
       `<section class="main main--level main--level-genre">
-         ${contentTemplate(this._questionData)}
+         ${this._contentTemplate()}
        </section>`
     );
   }
@@ -94,7 +41,7 @@ export default class GenreQuestionPageView extends AbstractView {
     for (let i = 0, length = answersNodeList.length; i < length; i++) {
       const answerNode = answersNodeList[i];
       const answerInputNode = answerNode.querySelector(`input`);
-      answerNode.insertBefore(this._childViews.renderAudioControlViewList[i](), answerInputNode);
+      answerNode.insertBefore(this._childViews.renderAudioControlViewsList[i](), answerInputNode);
     }
   }
 
@@ -122,8 +69,65 @@ export default class GenreQuestionPageView extends AbstractView {
   }
 
   /**
+   * Функция возвращает блок текста вопроса
+   *
+   * @return {string} шаблон блока вопроса
+   */
+  _taskTemplate() {
+    return (
+      `<h2 class="title">${this._questionData.question}</h2>`
+    );
+  }
+
+  /**
+   * Функция возвращает шаблон блока ответов
+   *
+   * @return {string} шаблон блока ответов
+   */
+  _answersFormTemplate() {
+    return (
+      `<form class="genre">
+         ${this._questionData.answers.map(GenreQuestionPageView._answerTemplate)}     
+         <button class="genre-answer-send" type="submit" disabled>Ответить</button>
+       </form>`
+    );
+  }
+
+  /**
+   * Функция возвращает шаблон блока контента
+   *
+   * @return {string} шаблон блока контента
+   */
+  _contentTemplate() {
+    return (
+      `<div class="main-wrap">
+         ${this._taskTemplate()}
+         ${this._answersFormTemplate()}
+       </div>`
+    );
+  }
+
+  /**
    * Колбэк обработки нажатия на подтверждение ответа
    */
   onAnswerClick() {
+  }
+
+  /**
+   * Функция возвращает шаблон блока ответа
+   *
+   * @param {Object} answer Объект варианта ответа
+   * @param {string} answer.id Идентификатор песни
+   * @param {string} answer.genre Жанр песни
+   *
+   * @return {string} шаблон блока ответа
+   */
+  static _answerTemplate(answer) {
+    return (
+      `<div class="genre-answer">
+         <input type="checkbox" name="answer" value=${answer.genre} id=${answer.id}>
+         <label class="genre-answer-check" for=${answer.id}></label>
+       </div>`
+    );
   }
 }

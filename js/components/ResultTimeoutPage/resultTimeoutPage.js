@@ -1,6 +1,6 @@
 import renderPage from '../../utils/renderPage';
 import ResultTimeoutPageView from './ResultTimeoutPageView';
-import App from '../../App';
+import app from '../../app';
 import getGameResultMessage from '../../utils/getGameResultMessage';
 
 /**
@@ -19,7 +19,7 @@ class ResultTimeoutPage {
     renderPage(this._view.element);
 
     this._view.onRestartClick = () => {
-      App.showWelcomePage();
+      app.startGame();
     };
   }
 }
