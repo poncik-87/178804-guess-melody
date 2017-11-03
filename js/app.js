@@ -6,6 +6,7 @@ import resultLoosePage from './components/ResultLoosePage/resultLoosePage';
 import resultTimeoutPage from './components/ResultTimeoutPage/resultTimeoutPage';
 import resultWinPage from './components/ResultWinPage/resultWinPage';
 import welcomePage from './components/WelcomePage/welcomePage';
+import loadingPage from './components/LoadingPage/loadingPage';
 import GameState from './data/GameState';
 import loader from './loader';
 import adaptServerData from './utils/adaptServerData';
@@ -29,6 +30,7 @@ class App {
   constructor() {
     window.onhashchange = this.onHashChanged.bind(this);
 
+    loadingPage.init();
     loader.load(SERVER_GAME_DATA_URL).
         then(adaptServerData).
         then((data) => {
