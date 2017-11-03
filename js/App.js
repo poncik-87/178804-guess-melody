@@ -9,6 +9,7 @@ import WelcomePage from './components/WelcomePage/WelcomePage';
 import GameState from './data/GameState';
 import Loader from './Loader';
 import adaptServerData from './utils/adaptServerData';
+import preloadAudio from './utils/preloadAudio';
 
 const PageId = {
   WELCOME: `welcome`,
@@ -31,7 +32,11 @@ class App {
     Loader.load(SERVER_GAME_DATA_URL).
         then(adaptServerData).
         then((data) => {
-          this._data = data;
+          this._gameState = GameState.generate(data);
+          return this._gameState.audioSrcList;
+        }).
+        then((srcList) => preloadAudio(srcList)).
+        then(() => {
           this.onHashChanged();
         });
   }
@@ -84,7 +89,7 @@ class App {
         WelcomePage.init();
         break;
       case PageId.GAME:
-        this.showNextPage(GameState.generate(this._data));
+        this.showNextPage(this._gameState);
         break;
       case PageId.RESULT_LOOSE:
         ResultLoosePage.init();

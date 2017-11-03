@@ -1,4 +1,4 @@
-import {Answer, MAX_FAULTS_COUNT} from "../consts";
+import {Answer, QuestionType, MAX_FAULTS_COUNT} from "../consts";
 
 import timeConverter from '../utils/timeConverter';
 
@@ -87,6 +87,27 @@ export default class GameState {
       }
       return acc;
     }, initScore);
+  }
+
+  /**
+   * Возвращает список url адресов песен
+   */
+  get audioSrcList() {
+    let srcList = [];
+    this._questions.forEach((dataItem) => {
+      if (dataItem.type === QuestionType.ARTIST) {
+        if (srcList.indexOf(dataItem.src) === -1) {
+          srcList.push(dataItem.src);
+        }
+      } else if (dataItem.type === QuestionType.GENRE) {
+        dataItem.answers.forEach(({src}) => {
+          if (srcList.indexOf(src) === -1) {
+            srcList.push(src);
+          }
+        });
+      }
+    });
+    return srcList;
   }
 
   /**
