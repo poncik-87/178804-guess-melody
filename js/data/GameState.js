@@ -1,4 +1,4 @@
-import {Answer, QuestionType, MAX_FAULTS_COUNT} from "../consts";
+import {Answer, MAX_FAULTS_COUNT} from "../consts";
 
 import timeConverter from '../utils/timeConverter';
 
@@ -90,37 +90,16 @@ export default class GameState {
   }
 
   /**
-   * Возвращает список url адресов песен
-   */
-  get audioSrcList() {
-    let srcList = [];
-    this._questions.forEach((dataItem) => {
-      if (dataItem.type === QuestionType.ARTIST) {
-        if (srcList.indexOf(dataItem.src) === -1) {
-          srcList.push(dataItem.src);
-        }
-      } else if (dataItem.type === QuestionType.GENRE) {
-        dataItem.answers.forEach((answer) => {
-          if (srcList.indexOf(answer.src) === -1) {
-            srcList.push(answer.src);
-          }
-        });
-      }
-    });
-    return srcList;
-  }
-
-  /**
    * Функция увеличивает количество ошибок игрока на 1
    *
    * @return {GameState} Новое состояние игры
    */
   increaseFault() {
-    let newGameState = GameState._copy(this);
+    const newGameState = GameState._copy(this);
     newGameState._faults = newGameState._faults + 1;
 
     // оповещение подписчиков об изменении модели
-    for (let callback of this._onFaultsChangedCallbackSet) {
+    for (const callback of this._onFaultsChangedCallbackSet) {
       callback(newGameState._faults);
     }
 
@@ -133,11 +112,11 @@ export default class GameState {
    * @return {GameState} Новое состояние игры
    */
   tickTime() {
-    let newGameState = GameState._copy(this);
+    const newGameState = GameState._copy(this);
     newGameState._time = newGameState._time - 1;
 
     // оповещение подписчиков об изменении модели
-    for (let callback of this._onTimeChangedCallbackSet) {
+    for (const callback of this._onTimeChangedCallbackSet) {
       callback(newGameState._time);
     }
 
@@ -150,7 +129,7 @@ export default class GameState {
    * @return {GameState} Новое состояние игры
    */
   iterateQuestion() {
-    let newGameState = GameState._copy(this);
+    const newGameState = GameState._copy(this);
     newGameState._currentQuestionIdx = newGameState._currentQuestionIdx + 1;
     return newGameState;
   }
@@ -163,7 +142,7 @@ export default class GameState {
    * @return {GameState} Новое состояние игры
    */
   setQuestionAnswer(answer) {
-    let newGameState = GameState._copy(this);
+    const newGameState = GameState._copy(this);
     newGameState._questions[newGameState._currentQuestionIdx].answer = answer;
     return newGameState;
   }
@@ -194,7 +173,7 @@ export default class GameState {
    * @return {GameState} Новое состояние игры
    */
   static generate(data) {
-    let newGameState = new GameState();
+    const newGameState = new GameState();
     newGameState._faults = initState.faults;
     newGameState._time = initState.time;
     newGameState._questions = data.map((dataItem) => Object.assign({}, dataItem));
@@ -210,7 +189,7 @@ export default class GameState {
    * @private
    */
   static _copy(oldGameState) {
-    let newGameState = new GameState();
+    const newGameState = new GameState();
     newGameState._faults = oldGameState._faults;
     newGameState._time = oldGameState._time;
     newGameState._questions = oldGameState._questions.slice();

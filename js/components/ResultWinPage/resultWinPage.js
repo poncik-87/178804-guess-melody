@@ -1,7 +1,6 @@
-import renderPage from '../../utils/renderPage';
+import renderMainView from '../../utils/renderMainView';
 import ResultWinPageView from './ResultWinPageView';
 import app from '../../app';
-import getGameResultMessage from '../../utils/getGameResultMessage';
 
 /**
  * Страница с результатом выигрыша
@@ -21,16 +20,10 @@ class ResultWinPage {
    * @param {Array<Object>} statsData Статистика прохождения игры
    */
   init({faults, time, totalScore, fastAnswersScore, statsData}) {
-    const resultMessage = getGameResultMessage({
-      score: totalScore,
-      faults,
-      time
-    }, statsData);
+    this._view.init({faults, time, totalScore, fastAnswersScore, statsData});
+    renderMainView(this._view);
 
-    this._view.init({faults, time, totalScore, fastAnswersScore, resultMessage});
-    renderPage(this._view.element);
-
-    this._view.onRestartClick = () => {
+    this._view.onRestartClick = function () {
       app.startGame();
     };
   }

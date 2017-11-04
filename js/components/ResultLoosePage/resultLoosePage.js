@@ -1,9 +1,6 @@
-import {MAX_FAULTS_COUNT} from '../../consts';
-
-import renderPage from '../../utils/renderPage';
+import renderMainView from '../../utils/renderMainView';
 import ResultLoosePageView from './ResultLoosePageView';
 import app from '../../app';
-import getGameResultMessage from '../../utils/getGameResultMessage';
 
 /**
  * Страница результата проигрыша
@@ -17,10 +14,10 @@ class ResultLoosePage {
    * Функция инициализации страницы
    */
   init() {
-    this._view.init(getGameResultMessage({faults: MAX_FAULTS_COUNT}));
-    renderPage(this._view.element);
+    this._view.init();
+    renderMainView(this._view);
 
-    this._view.onRestartClick = () => {
+    this._view.onRestartClick = function () {
       app.startGame();
     };
   }

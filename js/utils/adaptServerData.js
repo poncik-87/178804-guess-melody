@@ -7,7 +7,8 @@
 export default function adaptServerData(serverData) {
   return serverData.map((dataItem) => {
     const appDataItem = Object.assign({}, dataItem);
-    appDataItem.answers = appDataItem.answers.map((answer, idx) => Object.assign({}, answer, {id: idx.toString()}));
+    appDataItem.answers = appDataItem.answers.map((answer, idx) =>
+      Object.assign({}, answer, {id: idx.toString()}));
     return appDataItem;
   });
 }

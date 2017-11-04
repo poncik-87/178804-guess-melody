@@ -17,8 +17,13 @@ export default class GameStatus {
 
     gameState.subscribeOnTimeChanged(this.onTimeChanged.bind(this));
     gameState.subscribeOnFaultsChanged(this.onFaultsChanged.bind(this));
+  }
 
-    this.renderView = this.renderView.bind(this);
+  /**
+   * @return {AbstractView} Вью блока статуса игры
+   */
+  get view() {
+    return this._view;
   }
 
   /**
@@ -28,27 +33,7 @@ export default class GameStatus {
    * @param {number} time Время игры
    */
   init({faults, time}) {
-    this._view.init({faults, time, isWarninMode: this._isWarningMode(time)});
-  }
-
-  /**
-   * Колбэк отрисовки вью в родителе
-   *
-   * @return {HTMLElement} Элемент блока статуса игры
-   */
-  renderView() {
-    return this._view.element;
-  }
-
-  /**
-   * Функция возвращает признак режима предупреждения
-   *
-   * @param {number} time Оставшееся время
-   * @return {boolean} Признак режима предупреждения
-   * @private
-   */
-  _isWarningMode(time) {
-    return time < WARNING_TIME;
+    this._view.init({faults, time, isWarninMode: GameStatus._isWarningMode(time)});
   }
 
   /**
@@ -57,7 +42,7 @@ export default class GameStatus {
    * @param {number} time Оставшееся время игры
    */
   onTimeChanged(time) {
-    this._view.updateTime(time, this._isWarningMode(time));
+    this._view.updateTime(time, GameStatus._isWarningMode(time));
   }
 
   /**
@@ -67,5 +52,16 @@ export default class GameStatus {
    */
   onFaultsChanged(faults) {
     this._view.updateFaults(faults);
+  }
+
+  /**
+   * Функция возвращает признак режима предупреждения
+   *
+   * @param {number} time Оставшееся время
+   * @return {boolean} Признак режима предупреждения
+   * @private
+   */
+  static _isWarningMode(time) {
+    return time < WARNING_TIME;
   }
 }

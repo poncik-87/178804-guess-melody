@@ -4,7 +4,7 @@ import app from '../../app';
 import AudioControl from '../AudioControl/AudioControl';
 import GameStatus from '../GameStatus/GameStatus';
 import ArtistQuestionPageView from './ArtistQuestionPageView';
-import renderPage from '../../utils/renderPage';
+import renderMainView from '../../utils/renderMainView';
 
 /**
  * Страница вопроса автора песни
@@ -31,21 +31,21 @@ class ArtistQuestionPage {
       this._audioControl.remove();
     }
 
-    const gameStatus = new GameStatus(gameState);
     this._audioControl = new AudioControl({
       src: gameState.currentQuestion.src,
       isAutoplay: true});
 
+    const gameStatus = new GameStatus(gameState);
     gameStatus.init({
       faults: this._gameState.faults,
       time: this._gameState.time
     });
     this._view.init(this._gameState.currentQuestion, {
-      renderGameStatusView: gameStatus.renderView,
-      renderAudioControlView: this._audioControl.renderView
+      gameStatusView: gameStatus.view,
+      audioControlView: this._audioControl.view
     });
 
-    renderPage(this._view.element);
+    renderMainView(this._view);
 
     this._timerId = setInterval(this._onTimerTick.bind(this), TICK_TIME);
     this._fastAnswerTimer = setTimeout(this._onFastAnswerTimerTimeout.bind(this), FAST_ANSWER_TIMEOUT);

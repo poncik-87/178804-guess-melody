@@ -8,7 +8,7 @@ const timeConverter = {
    * @param {number} timeInSeconds Время в секундах
    * @return {Object} Объект времени с минутами и секундами
    */
-  numberToTime: (timeInSeconds) => {
+  numberToTime(timeInSeconds) {
     return {
       minutes: Math.floor(timeInSeconds / 60),
       seconds: timeInSeconds % 60
@@ -22,7 +22,7 @@ const timeConverter = {
    * @param {number} time.seconds Секунды
    * @return {number} Время в секундах
    */
-  timeToNumber: (time) => {
+  timeToNumber(time) {
     return time.minutes * 60 + time.seconds;
   }
 };
