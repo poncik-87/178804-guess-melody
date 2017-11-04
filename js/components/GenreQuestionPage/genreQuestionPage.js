@@ -4,7 +4,7 @@ import app from '../../app';
 import GameStatus from '../GameStatus/GameStatus';
 import AudioControl from '../AudioControl/AudioControl';
 import GenreQuestionPageView from './GenreQuestionPageView';
-import renderPage from '../../utils/renderPage';
+import renderMainView from '../../utils/renderMainView';
 
 /**
  * Страница вопроса жанра песни
@@ -27,28 +27,35 @@ class GenreQuestionPage {
     this._gameState = gameState;
     this._isFastAnswer = true;
 
-    const gameStatus = new GameStatus(gameState);
-    let renderAudioControlViewsList = [];
+    if (this._audioControlsList) {
+      this._audioControlsList.forEach((audioControl) => {
+        audioControl.remove();
+      });
+    }
+
+    const audioControlViewsList = [];
     this._audioControlsList = [];
     this._gameState.currentQuestion.answers.forEach(({src}) => {
       const audioControl = new AudioControl({src, isAutoplay: false});
-      this._audioControlsList.push(audioControl);
-      renderAudioControlViewsList.push(audioControl.renderView);
 
-      audioControl.onPlayClicked = () => {
+      this._audioControlsList.push(audioControl);
+      audioControlViewsList.push(audioControl.view);
+
+      audioControl.onPlayClicked = function () {
         this._audioControlClicked(audioControl);
-      };
+      }.bind(this);
     });
 
+    const gameStatus = new GameStatus(gameState);
     gameStatus.init({
       faults: this._gameState.faults,
       time: this._gameState.time
     });
     this._view.init(this._gameState.currentQuestion, {
-      renderGameStatusView: gameStatus.renderView,
-      renderAudioControlViewsList});
+      gameStatusView: gameStatus.view,
+      audioControlViewsList});
 
-    renderPage(this._view.element);
+    renderMainView(this._view);
 
     this._timerId = setInterval(this._onTimerTick.bind(this), TICK_TIME);
     this._fastAnswerTimer = setTimeout(this._onFastAnswerTimerTimeout.bind(this), FAST_ANSWER_TIMEOUT);

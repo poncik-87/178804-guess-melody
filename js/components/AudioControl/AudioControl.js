@@ -12,37 +12,66 @@ export default class AudioControl {
     this._view = new AudioControlView(src, isAutoplay);
 
     this._view.onPlayClicked = this._onPlayClicked.bind(this);
-    this.renderView = this.renderView.bind(this);
   }
 
   /**
    * @return {boolean} Признак того, играет ли в данный момент песня
    */
   get isPlaying() {
-    return this._view.isPlaying;
+    return this._isPlaying;
   }
 
   /**
-   * Колбэк отрисовки вью в родителе
-   *
-   * @return {HTMLElement} Элемент контрола
+   * @return {AbstractView} Вью контрола
    */
-  renderView() {
-    return this._view.element;
+  get view() {
+    return this._view;
+  }
+
+  /**
+   * Удаление компонента из dom
+   */
+  remove() {
+    this._view.element.parentNode.removeChild(this._view.element);
   }
 
   /**
    * Начать воспроизведение песни
    */
   play() {
-    this._view.play();
+    this._isPlaying = true;
+    this._onPlayStatusChanged();
   }
 
   /**
    * Поставить воспроизведение песни на паузу
    */
   pause() {
-    this._view.pause();
+    this._isPlaying = false;
+    this._onPlayStatusChanged();
+  }
+
+  /**
+   * Сменить режим воспроизведения
+   */
+  togglePlay() {
+    this._isPlaying = !this._isPlaying;
+    this._onPlayStatusChanged();
+  }
+
+  /**
+   * Обработчик изменения режима воспроизведения
+   *
+   * @private
+   */
+  _onPlayStatusChanged() {
+    if (this.view.element) {
+      if (this._isPlaying) {
+        this._view.play();
+      } else {
+        this._view.pause();
+      }
+    }
   }
 
   /**
@@ -54,8 +83,7 @@ export default class AudioControl {
     if (this.onPlayClicked) {
       this.onPlayClicked();
     } else {
-      this._view.togglePlay();
+      this.togglePlay();
     }
   }
-
 }

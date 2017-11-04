@@ -1,5 +1,6 @@
 import AbstractView from '../../AbstractView';
 import timeConverter from '../../utils/timeConverter';
+import getGameResultMessage from '../../utils/getGameResultMessage';
 
 /**
  * Вью экрана выигрыша
@@ -31,14 +32,18 @@ export default class ResultWinPageView extends AbstractView {
    * @param {number} time Оставшееся время игры
    * @param {number} totalScore Общий счет игрока
    * @param {number} fastAnswersScore Счет быстрых ответов
-   * @param {string} resultMessage Сообщение результата игры
+   * @param {Array<Object>} statsData Статистика прохождения игры
    */
-  init({faults, time, totalScore, fastAnswersScore, resultMessage}) {
+  init({faults, time, totalScore, fastAnswersScore, statsData}) {
     this._faults = faults;
     this._time = time;
     this._totalScore = totalScore;
     this._fastAnswersScore = fastAnswersScore;
-    this._resultMessage = resultMessage;
+    this._resultMessage = getGameResultMessage({
+      score: totalScore,
+      faults,
+      time
+    }, statsData);
 
     this.clearElement();
   }

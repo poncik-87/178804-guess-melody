@@ -1,5 +1,5 @@
 import LoadingPageView from './LoadingPageView';
-import renderPage from "../../utils/renderPage";
+import renderMainView from "../../utils/renderMainView";
 
 /**
  * Страница загрузки
@@ -13,7 +13,7 @@ class LoadingPage {
    * Функция инициализации страницы
    */
   init() {
-    renderPage(this._view.element);
+    renderMainView(this._view);
   }
 }
 

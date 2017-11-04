@@ -13,7 +13,7 @@ import repeatTimes from '../utils/repeatTimes';
  *
  * @return {GameState} Данные игры с заданными характеристиками
  */
-const getSimulatedGameData = (faults, correctAnswersCount, fastCorrectAnswersCount, incorrectAnswersCount) => {
+function getSimulatedGameData(faults, correctAnswersCount, fastCorrectAnswersCount, incorrectAnswersCount) {
   const data = new Array(10).fill({});
   let gameState = GameState.generate(data);
   if (gameState.faults > faults) {
@@ -36,7 +36,7 @@ const getSimulatedGameData = (faults, correctAnswersCount, fastCorrectAnswersCou
   });
 
   return gameState;
-};
+}
 
 describe(`userScore`, () => {
   let gameState;

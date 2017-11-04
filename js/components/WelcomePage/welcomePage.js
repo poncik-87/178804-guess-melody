@@ -1,5 +1,5 @@
 import WelcomePageView from './WelcomePageView';
-import renderPage from "../../utils/renderPage";
+import renderMainView from "../../utils/renderMainView";
 import app from '../../app';
 
 /**
@@ -14,9 +14,9 @@ class WelcomePage {
    * Функция инициализации страницы
    */
   init() {
-    renderPage(this._view.element);
+    renderMainView(this._view);
 
-    this._view.onStartClick = () => {
+    this._view.onStartClick = function () {
       app.startGame();
     };
   }

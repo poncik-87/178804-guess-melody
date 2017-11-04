@@ -20,12 +20,12 @@ export default class ArtistQuestionPageView extends AbstractView {
    *
    * @param {Object} questionData Объект данных вопроса
    * @param {Object} childrenViews Дочерние отображения
-   * @param {Function} childrenViews.renderGameStatusView Функция отрисовки статуса игры
-   * @param {Function} childrenViews.renderAudioControlView Функция отрисовки контрола аудио
+   * @param {Function} childrenViews.gameStatusView Вью статуса игры
+   * @param {Function} childrenViews.audioControlView Вью контрола аудио
    */
   init(questionData, childrenViews) {
     this._questionData = questionData;
-    this._childViews = childrenViews;
+    this._childrenViews = childrenViews;
 
     this.clearElement();
   }
@@ -36,8 +36,8 @@ export default class ArtistQuestionPageView extends AbstractView {
   insertChildren() {
     const mainWrapNode = this.element.querySelector(`.main-wrap`);
     const answersNode = this.element.querySelector(`.main-list`);
-    this.element.insertBefore(this._childViews.renderGameStatusView(), mainWrapNode);
-    mainWrapNode.insertBefore(this._childViews.renderAudioControlView(), answersNode);
+    this.element.insertBefore(this._childrenViews.gameStatusView.element, mainWrapNode);
+    mainWrapNode.insertBefore(this._childrenViews.audioControlView.element, answersNode);
   }
 
   /**

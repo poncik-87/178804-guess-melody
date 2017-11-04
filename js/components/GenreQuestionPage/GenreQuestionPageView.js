@@ -9,12 +9,12 @@ export default class GenreQuestionPageView extends AbstractView {
    *
    * @param {Object} questionData Объект данных вопроса
    * @param {Object} childrenViews Дочерние отображения
-   * @param {Function} childrenViews.renderGameStatusView Функция отрисовки статуса игры
-   * @param {Function[]} childrenViews.renderAudioControlViewsList Массив функций отрисовки контрола аудио
+   * @param {Function} childrenViews.gameStatusView Вью статуса игры
+   * @param {Function[]} childrenViews.audioControlViewsList Массив вью контрола аудио
    */
   init(questionData, childrenViews) {
     this._questionData = questionData;
-    this._childViews = childrenViews;
+    this._childrenViews = childrenViews;
 
     this.clearElement();
   }
@@ -35,13 +35,14 @@ export default class GenreQuestionPageView extends AbstractView {
    */
   insertChildren() {
     const mainWrapNode = this.element.querySelector(`.main-wrap`);
-    this.element.insertBefore(this._childViews.renderGameStatusView(), mainWrapNode);
+    this.element.insertBefore(this._childrenViews.gameStatusView.element, mainWrapNode);
 
     const answersNodeList = [...this.element.querySelectorAll(`.genre-answer`)];
+    // for - т.к. итерация происходит по двум массивам синхронно
     for (let i = 0, length = answersNodeList.length; i < length; i++) {
       const answerNode = answersNodeList[i];
       const answerInputNode = answerNode.querySelector(`input`);
-      answerNode.insertBefore(this._childViews.renderAudioControlViewsList[i](), answerInputNode);
+      answerNode.insertBefore(this._childrenViews.audioControlViewsList[i].element, answerInputNode);
     }
   }
 

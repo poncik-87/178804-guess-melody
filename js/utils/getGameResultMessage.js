@@ -1,6 +1,18 @@
 import {GameResult, MAX_FAULTS_COUNT} from '../consts';
 
 /**
+ * Возвращает текст сообщения победы
+ *
+ * @param {number} place Место, занятое игроком
+ * @param {number} gamersCount Количество игроков в статистике
+ * @param {number} rating Рейтинг игрока
+ * @return {string} Текст сообщения победы
+ */
+function gameResultMessage(place, gamersCount, rating) {
+  return `Вы заняли ${place}-ое место из ${gamersCount} игроков. Это лучше чем у ${rating}% игроков`;
+}
+
+/**
  * Функция возвращает результат игры в виде текстового сообщения
  *
  * @param {Object} currentUserResult Результаты текущего игрока
@@ -18,7 +30,7 @@ export default function getGameResultMessage(currentUserResult, otherUsersResult
     return GameResult.FAULTS_LOST;
   }
   if (otherUsersResults.length === 0) {
-    return GameResult.win(1, 1, 0);
+    return gameResultMessage(1, 1, 0);
   }
 
   // копирование массива для того, чтобы не менять внешних данных
@@ -32,5 +44,5 @@ export default function getGameResultMessage(currentUserResult, otherUsersResult
   const currentUserRating =
     Math.floor((currentUsersCount - currentUserPlace) * 100 / otherGamersCount);
 
-  return GameResult.win(currentUserPlace, currentUsersCount, currentUserRating);
+  return gameResultMessage(currentUserPlace, currentUsersCount, currentUserRating);
 }

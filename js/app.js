@@ -10,7 +10,6 @@ import loadingPage from './components/LoadingPage/loadingPage';
 import GameState from './data/GameState';
 import loader from './loader';
 import adaptServerData from './utils/adaptServerData';
-import preloadAudio from './utils/preloadAudio';
 
 const PageId = {
   WELCOME: `welcome`,
@@ -31,14 +30,11 @@ class App {
     window.onhashchange = this.onHashChanged.bind(this);
 
     loadingPage.init();
-    loader.load(SERVER_GAME_DATA_URL).
+    loader.
+        load(SERVER_GAME_DATA_URL).
         then(adaptServerData).
         then((data) => {
           this._gameState = GameState.generate(data);
-          return this._gameState.audioSrcList;
-        }).
-        then((srcList) => preloadAudio(srcList)).
-        then(() => {
           this.onHashChanged();
         });
   }
@@ -105,14 +101,17 @@ class App {
           return;
         }
 
-        loader.load(SERVER_STATS_URL).then((statsData) => {
-          resultWinPage.init({
-            faults: paramsObject.faults,
-            time: paramsObject.time,
-            totalScore: paramsObject.totalScore,
-            fastAnswersScore: paramsObject.fastAnswersScore,
-            statsData});
-        });
+        loadingPage.init();
+        loader.
+            load(SERVER_STATS_URL).
+            then((statsData) => {
+              resultWinPage.init({
+                faults: paramsObject.faults,
+                time: paramsObject.time,
+                totalScore: paramsObject.totalScore,
+                fastAnswersScore: paramsObject.fastAnswersScore,
+                statsData});
+            });
         break;
       default:
         break;
@@ -169,10 +168,13 @@ class App {
       fastAnswersScore: gameState.userScore.fastAnswersScore
     };
 
-    loader.save(statsData, SERVER_STATS_URL).then(() => {
-      const paramsString = JSON.stringify(resultData);
-      window.location.hash = `${PageId.RESULT_WIN}?${paramsString}`;
-    });
+    loadingPage.init();
+    loader.
+        save(statsData, SERVER_STATS_URL).
+        then(() => {
+          const paramsString = JSON.stringify(resultData);
+          window.location.hash = `${PageId.RESULT_WIN}?${paramsString}`;
+        });
   }
 }
 

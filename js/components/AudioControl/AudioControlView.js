@@ -6,7 +6,7 @@ import AbstractView from '../../AbstractView';
 export default class AudioControlView extends AbstractView {
   /**
    * @param {string} src Url аудиозаписи
-   * @param {boolean} isAutoplay Нужно ли автоматически начинать воспроизведение
+   * @param {boolean} isAutoplay Признак автоматичесого начала воспроизведения
    */
   constructor(src, isAutoplay) {
     super();
@@ -33,13 +33,6 @@ export default class AudioControlView extends AbstractView {
   }
 
   /**
-   * @return {boolean} Признак того, играет ли песня
-   */
-  get isPlaying() {
-    return !this._buttonClassNames.contains(`player-control--play`);
-  }
-
-  /**
    * @inheritdoc
    */
   bind() {
@@ -51,17 +44,6 @@ export default class AudioControlView extends AbstractView {
       evt.preventDefault();
       this.onPlayClicked();
     });
-  }
-
-  /**
-   * Сменить состояние воспроизведения песни
-   */
-  togglePlay() {
-    if (this.isPlaying) {
-      this.pause();
-    } else {
-      this.play();
-    }
   }
 
   /**
