@@ -1,15 +1,15 @@
 import {QuestionType, MAX_FAULTS_COUNT} from './consts';
 
-import artistQuestionPage from './components/ArtistQuestionPage/artistQuestionPage';
-import genreQuestionPage from './components/GenreQuestionPage/genreQuestionPage';
-import resultLoosePage from './components/ResultLoosePage/resultLoosePage';
-import resultTimeoutPage from './components/ResultTimeoutPage/resultTimeoutPage';
-import resultWinPage from './components/ResultWinPage/resultWinPage';
-import welcomePage from './components/WelcomePage/welcomePage';
-import loadingPage from './components/LoadingPage/loadingPage';
-import GameState from './data/GameState';
+import artistQuestionPage from './components/ArtistQuestionPage/artist-question-page';
+import genreQuestionPage from './components/GenreQuestionPage/genre-question-page';
+import resultLoosePage from './components/ResultLoosePage/result-loose-page';
+import resultTimeoutPage from './components/ResultTimeoutPage/result-timeout-page';
+import resultWinPage from './components/ResultWinPage/result-win-page';
+import welcomePage from './components/WelcomePage/welcome-page';
+import loadingPage from './components/LoadingPage/loading-page';
+import GameState from './data/game-state';
 import loader from './loader';
-import adaptServerData from './utils/adaptServerData';
+import adaptServerData from './utils/adapt-server-data';
 
 const PageId = {
   WELCOME: `welcome`,

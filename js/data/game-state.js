@@ -1,6 +1,6 @@
 import {Answer, MAX_FAULTS_COUNT} from "../consts";
 
-import timeConverter from '../utils/timeConverter';
+import timeConverter from '../utils/time-converter';
 
 const initState = {
   faults: 0,

@@ -1,4 +1,4 @@
-import AbstractView from '../../AbstractView';
+import AbstractView from '../../abstract-view';
 
 /**
  * Класс вью для контрола аудио

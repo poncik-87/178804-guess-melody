@@ -1,20 +1,22 @@
-import AbstractView from '../../AbstractView';
-import getGameResultMessage from '../../utils/getGameResultMessage';
+import {MAX_FAULTS_COUNT} from '../../consts';
+
+import AbstractView from '../../abstract-view';
+import getGameResultMessage from '../../utils/get-game-result-message';
 
 /**
- * Вью страницы закончившегося времени
+ * Вью страницы проигрыша
  */
-export default class ResultTimeoutPageView extends AbstractView {
+export default class ResultLoosePageView extends AbstractView {
   /**
    * @inheritdoc
    */
   get template() {
-    const resultMessage = getGameResultMessage({time: 0});
+    const resultMessage = getGameResultMessage({faults: MAX_FAULTS_COUNT});
     return (
       `<section class="main main--result">
          <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
 
-         <h2 class="title">Увы и ах!</h2>
+         <h2 class="title">Какая жалость!</h2>
          <div class="main-stat">${resultMessage}</div>
          <span role="button" tabindex="0" class="main-replay">Попробовать ещё раз</span>
        </section>`

@@ -1,17 +1,17 @@
 import {Answer, TICK_TIME, FAST_ANSWER_TIMEOUT} from '../../consts';
 
 import app from '../../app';
-import GameStatus from '../GameStatus/GameStatus';
-import AudioControl from '../AudioControl/AudioControl';
-import GenreQuestionPageView from './GenreQuestionPageView';
-import renderMainView from '../../utils/renderMainView';
+import AudioControl from '../AudioControl/audio-control';
+import GameStatus from '../GameStatus/game-status';
+import ArtistQuestionPageView from './artist-question-page-view';
+import renderMainView from '../../utils/render-main-view';
 
 /**
- * Страница вопроса жанра песни
+ * Страница вопроса автора песни
  */
-class GenreQuestionPage {
+class ArtistQuestionPage {
   constructor() {
-    this._view = new GenreQuestionPageView();
+    this._view = new ArtistQuestionPageView();
   }
 
   /**
@@ -27,24 +27,13 @@ class GenreQuestionPage {
     this._gameState = gameState;
     this._isFastAnswer = true;
 
-    if (this._audioControlsList) {
-      this._audioControlsList.forEach((audioControl) => {
-        audioControl.remove();
-      });
+    if (this._audioControl) {
+      this._audioControl.remove();
     }
 
-    const audioControlViewsList = [];
-    this._audioControlsList = [];
-    this._gameState.currentQuestion.answers.forEach(({src}) => {
-      const audioControl = new AudioControl({src, isAutoplay: false});
-
-      this._audioControlsList.push(audioControl);
-      audioControlViewsList.push(audioControl.view);
-
-      audioControl.onPlayClicked = function () {
-        this._audioControlClicked(audioControl);
-      }.bind(this);
-    });
+    this._audioControl = new AudioControl({
+      src: gameState.currentQuestion.src,
+      isAutoplay: true});
 
     const gameStatus = new GameStatus(gameState);
     gameStatus.init({
@@ -53,7 +42,8 @@ class GenreQuestionPage {
     });
     this._view.init(this._gameState.currentQuestion, {
       gameStatusView: gameStatus.view,
-      audioControlViewsList});
+      audioControlView: this._audioControl.view
+    });
 
     renderMainView(this._view);
 
@@ -97,13 +87,12 @@ class GenreQuestionPage {
   /**
    * Обработчик нажатия кнопки перехода к следующему экрану
    *
-   * @param {Array<string>} checkedAnswerGenres Признак правильности ответа
+   * @param {string} answerId Идентификатор ответа
    * @private
    */
-  _onAnswerClick(checkedAnswerGenres) {
-    const isCorrectAnswer = !checkedAnswerGenres.some((genre) => genre !== this._gameState.currentQuestion.genre);
-
-    if (isCorrectAnswer) {
+  _onAnswerClick(answerId) {
+    const answer = this._gameState.currentQuestion.answers.find(({id}) => id === answerId);
+    if (answer && answer.isCorrect) {
       this._gameState = this._gameState.setQuestionAnswer(this._isFastAnswer ? Answer.FAST_CORRECT : Answer.CORRECT);
     } else {
       this._gameState = this._gameState.setQuestionAnswer(Answer.INCORRECT).increaseFault();
@@ -111,27 +100,6 @@ class GenreQuestionPage {
 
     this._showNextPage();
   }
-
-  /**
-   * Обработчик нажатия кнопки воспроизведения песни
-   *
-   * @param {AudioControl} currentAudioControl Аудио контрол на котором произошло событие
-   * @private
-   */
-  _audioControlClicked(currentAudioControl) {
-    if (!currentAudioControl.isPlaying) {
-      // нужно остановить воспроизведение предыдущей песни
-      this._audioControlsList.forEach((audioControl) => {
-        if (audioControl.isPlaying) {
-          audioControl.pause();
-        }
-      });
-
-      currentAudioControl.play();
-    } else {
-      currentAudioControl.pause();
-    }
-  }
 }
 
-export default new GenreQuestionPage();
+export default new ArtistQuestionPage();

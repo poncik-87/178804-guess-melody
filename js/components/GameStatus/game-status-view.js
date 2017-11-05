@@ -1,5 +1,5 @@
-import AbstractView from '../../AbstractView';
-import timeConverter from '../../utils/timeConverter';
+import AbstractView from '../../abstract-view';
+import timeConverter from '../../utils/time-converter';
 
 /**
  * Класс вью для компонента статуса игры
@@ -28,7 +28,7 @@ export default class GameStatusView extends AbstractView {
   init({faults, time, isWarninMode}) {
     this._faults = faults;
     this._time = time;
-    this._isWarninMode = isWarninMode;
+    this._isWarningMode = isWarninMode;
   }
 
   /**

@@ -1,5 +1,5 @@
-import WelcomePageView from './WelcomePageView';
-import renderMainView from "../../utils/renderMainView";
+import WelcomePageView from './welcome-page-view';
+import renderMainView from "../../utils/render-main-view";
 import app from '../../app';
 
 /**

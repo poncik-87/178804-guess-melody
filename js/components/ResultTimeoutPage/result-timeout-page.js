@@ -1,5 +1,5 @@
-import renderMainView from '../../utils/renderMainView';
-import ResultTimeoutPageView from './ResultTimeoutPageView';
+import renderMainView from '../../utils/render-main-view';
+import ResultTimeoutPageView from './result-timeout-page-view';
 import app from '../../app';
 
 /**

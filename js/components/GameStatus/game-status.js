@@ -1,4 +1,4 @@
-import GameStatusView from './GameStatusView';
+import GameStatusView from './game-status-view';
 
 /**
  * Время, после которого включается режим предупреждения об окончании времени

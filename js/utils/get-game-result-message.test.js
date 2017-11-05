@@ -1,5 +1,5 @@
 import assert from 'assert';
-import getGameResultMessage from './getGameResultMessage';
+import getGameResultMessage from './get-game-result-message';
 import {GameResult, MAX_FAULTS_COUNT} from '../consts';
 
 /**

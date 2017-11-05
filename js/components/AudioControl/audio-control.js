@@ -1,4 +1,4 @@
-import AudioControlView from './AudioControlView';
+import AudioControlView from './audio-control-view';
 
 /**
  * Контрола аудио

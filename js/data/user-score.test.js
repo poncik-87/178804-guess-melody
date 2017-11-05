@@ -1,7 +1,7 @@
 import assert from 'assert';
 import {Answer, MAX_FAULTS_COUNT} from "../consts";
-import GameState from './GameState';
-import repeatTimes from '../utils/repeatTimes';
+import GameState from './game-state';
+import repeatTimes from '../utils/repeat-times';
 
 /**
  * Функция создает данные игры с заданным количеством ответов определенного типа и ошибок игрока

@@ -1,5 +1,5 @@
-import renderMainView from '../../utils/renderMainView';
-import ResultWinPageView from './ResultWinPageView';
+import renderMainView from '../../utils/render-main-view';
+import ResultWinPageView from './result-win-page-view';
 import app from '../../app';
 
 /**

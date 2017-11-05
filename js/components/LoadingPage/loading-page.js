@@ -1,5 +1,5 @@
-import LoadingPageView from './LoadingPageView';
-import renderMainView from "../../utils/renderMainView";
+import LoadingPageView from './loading-page-view';
+import renderMainView from "../../utils/render-main-view";
 
 /**
  * Страница загрузки

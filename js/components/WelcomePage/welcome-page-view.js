@@ -1,6 +1,6 @@
 import {MAX_FAULTS_COUNT} from '../../consts';
 
-import AbstractView from '../../AbstractView';
+import AbstractView from '../../abstract-view';
 
 /**
  * Вью приветственного экрана

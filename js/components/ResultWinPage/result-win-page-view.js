@@ -1,6 +1,6 @@
-import AbstractView from '../../AbstractView';
-import timeConverter from '../../utils/timeConverter';
-import getGameResultMessage from '../../utils/getGameResultMessage';
+import AbstractView from '../../abstract-view';
+import timeConverter from '../../utils/time-converter';
+import getGameResultMessage from '../../utils/get-game-result-message';
 
 /**
  * Вью экрана выигрыша

@@ -1,5 +1,5 @@
-import renderMainView from '../../utils/renderMainView';
-import ResultLoosePageView from './ResultLoosePageView';
+import renderMainView from '../../utils/render-main-view';
+import ResultLoosePageView from './result-loose-page-view';
 import app from '../../app';
 
 /**
